@@ -1,5 +1,5 @@
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "vimdoc", "javascript", "typescript", "c", "lua", "rust", "graphql", "tsx", "vim", "query"},
+  ensure_installed = { "vimdoc", "javascript", "typescript", "c", "lua", "rust", "graphql", "tsx", "html", "vim", "yaml" },
 
   sync_install = false,
 
@@ -7,8 +7,14 @@ require'nvim-treesitter.configs'.setup {
   -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
   auto_install = true,
 
+  indent = {
+    enable = true,
+    disable = {},
+  },
+
   highlight = {
     enable = true,
+    disable = { "php" },
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
