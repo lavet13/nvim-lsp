@@ -67,9 +67,9 @@ return require('packer').startup(function(use)
         formatters_by_ft = {
           javascript = { "prettier" },
           javascriptreact = { "prettier" },
-          typescript = { "prettier", },
-          typescriptreact = { "prettier", },
-          graphql = { "prettier", },
+          typescript = { "prettier" },
+          typescriptreact = { "prettier" },
+          graphql = { "prettier" },
         },
       })
     end
