@@ -64,19 +64,12 @@ return require('packer').startup(function(use)
     "stevearc/conform.nvim",
     config = function()
       require("conform").setup({
-        formatters = {
-          prettierd = {
-            env = {
-              PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("~/AppData/Local/nvim/utils/linter-config/.prettierrc.json")
-            },
-          },
-        },
         formatters_by_ft = {
-          javascript = { "prettierd" },
-          javascriptreact = { "prettierd" },
-          typescript = { "prettierd", },
-          typescriptreact = { "prettierd", },
-          graphql = { "prettierd", },
+          javascript = { "prettier" },
+          javascriptreact = { "prettier" },
+          typescript = { "prettier", },
+          typescriptreact = { "prettier", },
+          graphql = { "prettier", },
         },
       })
     end
