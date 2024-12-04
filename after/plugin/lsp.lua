@@ -1,99 +1,114 @@
-vim.opt.updatetime = 350
+-- Add cmp_nvim_lsp capabilities settings to lspconfig
+-- This should be executed before you configure any language server
+local lspconfig_defaults = require('lspconfig').util.default_config
+lspconfig_defaults.capabilities = vim.tbl_deep_extend(
+  'force',
+  lspconfig_defaults.capabilities,
+  require('cmp_nvim_lsp').default_capabilities()
+)
 
-local lsp_zero = require('lsp-zero')
 
-lsp_zero.on_attach(function(client, bufnr)
-  local opts = { buffer = bufnr, remap = false }
+-- This is where you enable features that only work
+-- if there is a language server active in the file
+vim.api.nvim_create_autocmd('LspAttach', {
+  desc = 'LSP actions',
+  callback = function(event)
+    local opts = { buffer = event.buf }
 
-  lsp_zero.highlight_symbol(client, bufnr)
+    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+    vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end, opts)
+    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
+    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
+    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+    vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
+    vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 
-  vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-  vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-  vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-  vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-  vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-  vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-  vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-  vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-  vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-  vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+    vim.keymap.set({ 'n', 'x' }, 'gq', function()
+      vim.lsp.buf.format({ async = false, timeout_ms = 10000 })
+    end, opts)
 
-  vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format({ name = "null-ls", async = false, bufnr = bufnr }) end,
-    opts)
-end)
-
-lsp_zero.set_sign_icons({
-  error = '✘',
-  warn = '▲',
-  hint = '⚑',
-  info = '»'
+    vim.keymap.set({ "n", "v" }, "<leader>f", function()
+      require("conform").format({
+        lsp_format = "fallback",
+        async = true,
+        timeout_ms = 500
+      })
+    end, { desc = "Format file or range" })
+  end,
 })
 
-lsp_zero.format_mapping('gq', {
-  format_opts = {
-    async = false,
-    timeout_ms = 10000,
+vim.diagnostic.config({
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '✘',
+      [vim.diagnostic.severity.WARN] = '▲',
+      [vim.diagnostic.severity.HINT] = '⚑',
+      [vim.diagnostic.severity.INFO] = '»',
+    },
   },
-  servers = {
-    ['lua_ls'] = { 'lua' },
-    ['rust_analyzer'] = { 'rust' },
-    ['prismals'] = { 'prisma' },
-    ['intelephense'] = { 'php' },
-    ['clangd'] = { 'cpp', 'c' },
-  }
 })
 
-
-lsp_zero.setup()
-
-
--- to learn how to use mason.nvim with lsp-zero
--- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = { 'tsserver', 'rust_analyzer', 'cssls', 'jsonls', 'html' },
+  ensure_installed = { 'ts_ls', 'lua_ls', 'prismals@5.13.1', 'cssls', 'jsonls', 'html' },
   handlers = {
-    lsp_zero.default_setup,
-    lua_ls = function()
-      local lua_opts = lsp_zero.nvim_lua_ls()
-      require('lspconfig').lua_ls.setup(lua_opts)
+    function(server_name)
+      require('lspconfig')[server_name].setup({})
     end,
-  }
-})
+    lua_ls = function()
+      require 'lspconfig'.lua_ls.setup {
+        on_init = function(client)
+          if client.workspace_folders then
+            local path = client.workspace_folders[1].name
+            if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+              return
+            end
+          end
 
-local null_ls = require('null-ls')
-
-local null_opts = lsp_zero.build_options('null-ls', {})
-
-null_ls.setup({
-  on_attach = null_opts.on_attach,
-  sources = {
-    null_ls.builtins.formatting.prettierd.with({
-      env = {
-        PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("~/AppData/Local/nvim/utils/linter-config/.prettierrc.json"),
-      },
-    }),
-    null_ls.builtins.code_actions.eslint_d,
-  }
-})
-
-require('lspconfig').clangd.setup({
-  cmd = {
-    'clangd',
-    '--background-index',
-    '--clang-tidy'
-  }
+          client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+            runtime = {
+              -- Tell the language server which version of Lua you're using
+              -- (most likely LuaJIT in the case of Neovim)
+              version = 'LuaJIT'
+            },
+            -- Make the server aware of Neovim runtime files
+            workspace = {
+              checkThirdParty = false,
+              library = {
+                vim.env.VIMRUNTIME
+                -- Depending on the usage, you might want to add additional paths here.
+                -- "${3rd}/luv/library"
+                -- "${3rd}/busted/library",
+              }
+              -- or pull in all of 'runtimepath'. NOTE: this is a lot slower and will cause issues when working on your own configuration (see https://github.com/neovim/nvim-lspconfig/issues/3189)
+              -- library = vim.api.nvim_get_runtime_file("", true)
+            }
+          })
+        end,
+        settings = {
+          Lua = {}
+        }
+      }
+    end,
+    clangd = function()
+      require('lspconfig').clangd.setup({
+        cmd = {
+          'clangd',
+          '--background-index',
+          '--clang-tidy'
+        }
+      })
+    end,
+  },
 })
 
 local cmp = require('cmp')
-local cmp_action = lsp_zero.cmp_action()
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 cmp.setup({
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-  },
   sources = {
     { name = 'path' },
     { name = 'nvim_lsp' },
@@ -101,7 +116,6 @@ cmp.setup({
     { name = 'luasnip', keyword_length = 2 },
     { name = 'buffer',  keyword_length = 3 },
   },
-  formatting = lsp_zero.cmp_format(),
   mapping = cmp.mapping.preset.insert({
     -- `Super` Tab
     -- ['<Tab>'] = cmp_action.luasnip_supertab(),
@@ -140,4 +154,9 @@ cmp.setup({
     ['<C-u>'] = cmp.mapping.scroll_docs(-4),
     ['<C-d>'] = cmp.mapping.scroll_docs(4),
   }),
+  snippet = {
+    expand = function(args)
+      vim.snippet.expand(args.body)
+    end,
+  },
 })
