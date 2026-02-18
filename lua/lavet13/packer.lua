@@ -51,46 +51,16 @@ return require("packer").startup(function(use)
 
 	use("nvim-treesitter/nvim-treesitter-context")
 
-	use({
-		"VonHeikemen/lsp-zero.nvim",
-		branch = "v3.x",
-		requires = {
-			-- LSP Support
-			{ "neovim/nvim-lspconfig" },
-			{ "williamboman/mason.nvim" },
-			{ "williamboman/mason-lspconfig.nvim" },
-
-			-- Autocompletion
-			{ "hrsh7th/nvim-cmp" },
-			{ "hrsh7th/cmp-nvim-lsp" },
-			{ "L3MON4D3/LuaSnip" },
-		},
-	})
+  use("neovim/nvim-lspconfig")
+  use("mason-org/mason.nvim")
+  use("mason-org/mason-lspconfig.nvim")
+  use("hrsh7th/nvim-cmp")
+  use("hrsh7th/cmp-nvim-lsp")
+  use("L3MON4D3/LuaSnip")
 
 	use("laytan/cloak.nvim")
 
-	use({
-		"stevearc/conform.nvim",
-		event = { "BufReadPre", "BufNewFile" },
-		config = function()
-			require("conform").setup({
-				formatters_by_ft = {
-					css = { "prettier" },
-					html = { "prettier" },
-					json = { "prettier" },
-					yaml = { "prettier" },
-					markdown = { "prettier" },
-					graphql = { "prettier" },
-					lua = { "stylua" },
-					python = { "isort", "black" },
-					javascript = { "prettier" },
-					javascriptreact = { "prettier" },
-					typescript = { "prettier" },
-					typescriptreact = { "prettier" },
-				},
-			})
-		end,
-	})
+	use("stevearc/conform.nvim")
 
 	use("JoosepAlviste/nvim-ts-context-commentstring")
 
@@ -100,7 +70,6 @@ return require("packer").startup(function(use)
 			require("Comment").setup()
 		end,
 	})
-	use("lukas-reineke/lsp-format.nvim")
 
 	use("erikbackman/brightburn.vim")
 end)
