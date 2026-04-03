@@ -80,11 +80,12 @@
 | `K`              | Hover docs (press twice to enter float) |
 | `gd`             | Go to definition                        |
 | `gD`             | Go to declaration                       |
-| `grr`            | References                              |
 | `gri`            | Go to implementation                    |
+| `grr`            | References                              |
 | `grn`            | Rename                                  |
 | `gra`            | Code action                             |
 | `<leader>vws`    | Workspace symbol search                 |
+| `<leader>vri`    | Go to implementation (alternative)      |
 | `<leader>vd`     | Open diagnostics float (focusable)      |
 | `[d`             | Next diagnostic + open float            |
 | `]d`             | Prev diagnostic + open float            |
@@ -111,8 +112,8 @@
 | `<CR>` (Enter)    | Confirm only if explicitly selected         |
 | `<C-y>`           | Confirm and auto-select first item          |
 | `<C-e>`           | Abort / close completion menu               |
-| `<C-f>`           | Scroll docs up                              |
-| `<C-b>`           | Scroll docs down                            |
+| `<C-u>`           | Scroll docs up                              |
+| `<C-d>`           | Scroll docs down                            |
 
 ---
 

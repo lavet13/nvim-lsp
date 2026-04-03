@@ -42,6 +42,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
 		vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
 		vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
+		vim.keymap.set("n", "<leader>vri", vim.lsp.buf.implementation, opts)
 		vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
@@ -128,8 +129,8 @@ cmp.setup({
 		["<C-y>"] = cmp.mapping.confirm({ select = true }),
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.abort(),
-		["<C-f>"] = cmp.mapping.scroll_docs(-4),
-		["<C-b>"] = cmp.mapping.scroll_docs(4),
+		["<C-u>"] = cmp.mapping.scroll_docs(-4),
+		["<C-d>"] = cmp.mapping.scroll_docs(4),
 		["<Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item({ behavior = "insert" })
