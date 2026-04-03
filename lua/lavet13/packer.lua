@@ -64,6 +64,8 @@ return require("packer").startup(function(use)
 
 	use("JoosepAlviste/nvim-ts-context-commentstring")
 
+	use("kylechui/nvim-surround")
+
 	use({
 		"numToStr/Comment.nvim",
 		config = function()

@@ -121,7 +121,7 @@ _G.packer_plugins = {
     url = "https://github.com/mason-org/mason.nvim"
   },
   neovim = {
-    config = { "\27LJ\2\n¡\1\0\0\5\0\b\0\v6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\5\0005\4\4\0=\4\6\3=\3\a\2B\0\2\1K\0\1\0\21highlight_groups\fComment\1\0\1\fComment\0\1\0\1\vitalic\2\1\0\2\20disable_italics\2\21highlight_groups\0\nsetup\14rose-pine\frequire\0" },
+    config = { "\27LJ\2\n¡\1\0\0\5\0\b\0\v6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\5\0005\4\4\0=\4\6\3=\3\a\2B\0\2\1K\0\1\0\21highlight_groups\fComment\1\0\1\fComment\0\1\0\1\vitalic\2\1\0\2\21highlight_groups\0\20disable_italics\2\nsetup\14rose-pine\frequire\0" },
     loaded = true,
     path = "C:\\Users\\Ivan\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\neovim",
     url = "https://github.com/rose-pine/neovim"
@@ -135,6 +135,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "C:\\Users\\Ivan\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
+  },
+  ["nvim-surround"] = {
+    loaded = true,
+    path = "C:\\Users\\Ivan\\AppData\\Local\\nvim-data\\site\\pack\\packer\\start\\nvim-surround",
+    url = "https://github.com/kylechui/nvim-surround"
   },
   ["nvim-treesitter"] = {
     loaded = true,
@@ -190,18 +195,18 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+try_loadstring("\27LJ\2\nS\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\19live_grep_args\19load_extension\14telescope\frequire\0", "config", "telescope.nvim")
+time([[Config for telescope.nvim]], false)
 -- Config for: neovim
 time([[Config for neovim]], true)
-try_loadstring("\27LJ\2\n¡\1\0\0\5\0\b\0\v6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\5\0005\4\4\0=\4\6\3=\3\a\2B\0\2\1K\0\1\0\21highlight_groups\fComment\1\0\1\fComment\0\1\0\1\vitalic\2\1\0\2\20disable_italics\2\21highlight_groups\0\nsetup\14rose-pine\frequire\0", "config", "neovim")
+try_loadstring("\27LJ\2\n¡\1\0\0\5\0\b\0\v6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\5\0005\4\4\0=\4\6\3=\3\a\2B\0\2\1K\0\1\0\21highlight_groups\fComment\1\0\1\fComment\0\1\0\1\vitalic\2\1\0\2\21highlight_groups\0\20disable_italics\2\nsetup\14rose-pine\frequire\0", "config", "neovim")
 time([[Config for neovim]], false)
 -- Config for: Comment.nvim
 time([[Config for Comment.nvim]], true)
 try_loadstring("\27LJ\2\n5\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\fComment\frequire\0", "config", "Comment.nvim")
 time([[Config for Comment.nvim]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
-try_loadstring("\27LJ\2\nS\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0'\2\3\0B\0\2\1K\0\1\0\19live_grep_args\19load_extension\14telescope\frequire\0", "config", "telescope.nvim")
-time([[Config for telescope.nvim]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then
