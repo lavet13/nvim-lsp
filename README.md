@@ -77,6 +77,7 @@
 | `gd`             | Go to definition                        |
 | `gD`             | Go to declaration                       |
 | `grr`            | References                              |
+| `gri`            | Go to implementation                    |
 | `grn`            | Rename                                  |
 | `gra`            | Code action                             |
 | `<leader>vws`    | Workspace symbol search                 |
@@ -131,5 +132,5 @@
 | Key           | Action                                 |
 | ------------- | -------------------------------------- |
 | `<C-f>`       | Open tmux sessionizer (WSL/Linux only) |
-| `<leader>mr`  | Cellular Automaton make it rain 🌧️     |
+| `<leader>mr`  | Cellular Automaton make it rain        |
 | `<leader>vpp` | Open packer.lua directly               |

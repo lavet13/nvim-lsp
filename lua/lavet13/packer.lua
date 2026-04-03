@@ -51,12 +51,12 @@ return require("packer").startup(function(use)
 
 	use("nvim-treesitter/nvim-treesitter-context")
 
-  use("neovim/nvim-lspconfig")
-  use("mason-org/mason.nvim")
-  use("mason-org/mason-lspconfig.nvim")
-  use("hrsh7th/nvim-cmp")
-  use("hrsh7th/cmp-nvim-lsp")
-  use("L3MON4D3/LuaSnip")
+	use("neovim/nvim-lspconfig")
+	use("mason-org/mason.nvim")
+	use("mason-org/mason-lspconfig.nvim")
+	use("hrsh7th/nvim-cmp")
+	use("hrsh7th/cmp-nvim-lsp")
+	use("L3MON4D3/LuaSnip")
 
 	use("laytan/cloak.nvim")
 
