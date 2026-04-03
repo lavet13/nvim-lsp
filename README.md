@@ -58,12 +58,16 @@
 
 ## Telescope
 
-| Key          | Action                      |
-| ------------ | --------------------------- |
-| `<leader>pf` | Find files                  |
-| `<C-p>`      | Find git files              |
-| `<leader>ps` | Grep string (prompts input) |
-| `<leader>fg` | Live grep with args         |
+| Key          | Action                         |
+| ------------ | ------------------------------ |
+| `<leader>pf` | Find files                     |
+| `<C-p>`      | Find git files                 |
+| `<leader>ps` | Grep string (prompts input)    |
+| `<leader>fg` | Live grep with args            |
+| `<leader>pb` | Switch between open buffers    |
+| `<leader>pr` | Recently opened files          |
+| `<leader>pd` | All diagnostics across project |
+| `<leader>pk` | Search all keymaps             |
 
 ---
 
@@ -90,6 +94,49 @@
 | `<C-h>` (insert) | Signature help                          |
 | `gq`             | Format with LSP (sync)                  |
 | `<leader>f`      | Format with conform (async)             |
+
+---
+
+## Completion (nvim-cmp)
+
+> Active in insert mode.
+
+| Key               | Action                                      |
+| ----------------- | ------------------------------------------- |
+| `<C-Space>`       | Manually open completion menu               |
+| `<Up>` / `<Down>` | Navigate completion items (select behavior) |
+| `<C-k>` / `<C-j>` | Navigate completion items (insert behavior) |
+| `<Tab>`           | Next completion item (insert behavior)      |
+| `<S-Tab>`         | Prev completion item (insert behavior)      |
+| `<CR>` (Enter)    | Confirm only if explicitly selected         |
+| `<C-y>`           | Confirm and auto-select first item          |
+| `<C-e>`           | Abort / close completion menu               |
+| `<C-f>`           | Scroll docs up                              |
+| `<C-b>`           | Scroll docs down                            |
+
+---
+
+## Treesitter Incremental Selection
+
+| Key                    | Action                            |
+| ---------------------- | --------------------------------- |
+| `<C-Space>` (normal)   | Start selecting node under cursor |
+| `<C-Space>` (visual)   | Expand selection to parent node   |
+| `<Backspace>` (visual) | Shrink selection back             |
+
+---
+
+## Comment.nvim
+
+| Key           | Action                     |
+| ------------- | -------------------------- |
+| `gcc`         | Toggle line comment        |
+| `gbc`         | Toggle block comment       |
+| `gc` (visual) | Comment selected lines     |
+| `gb` (visual) | Block comment selection    |
+| `gcO`         | Add comment on line above  |
+| `gco`         | Add comment on line below  |
+| `gcA`         | Add comment at end of line |
 
 ---
 
@@ -124,6 +171,37 @@
 | Key         | Action          |
 | ----------- | --------------- |
 | `<leader>u` | Toggle Undotree |
+
+### Inside Undotree
+
+| Key       | Action                      |
+| --------- | --------------------------- |
+| `j` / `k` | Navigate undo states        |
+| `<CR>`    | Jump to selected undo state |
+| `p`       | Preview diff of that state  |
+| `q`       | Close Undotree              |
+
+---
+
+## Cloak (secret masking in .env files)
+
+| Command         | Action                         |
+| --------------- | ------------------------------ |
+| `:CloakToggle`  | Toggle cloaking on/off         |
+| `:CloakEnable`  | Enable cloaking                |
+| `:CloakDisable` | Temporarily reveal all secrets |
+
+---
+
+## WezTerm
+
+| Key             | Action                  |
+| --------------- | ----------------------- |
+| `<C-S-\|>`      | Split pane horizontally |
+| `<C-S-Minus>`   | Split pane vertically   |
+| `<C-S-h/l/k/j>` | Navigate between panes  |
+| `<C-S-Arrows>`  | Resize panes            |
+| `<C-S-N>`       | New window              |
 
 ---
 

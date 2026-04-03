@@ -124,12 +124,26 @@ cmp.setup({
 				cmp.complete()
 			end
 		end),
-		["<C-Space>"] = cmp.mapping.confirm({ select = true }),
-		["<CR>"] = cmp.mapping.confirm({ select = true }),
+		["<CR>"] = cmp.mapping.confirm({ select = false }),
 		["<C-y>"] = cmp.mapping.confirm({ select = true }),
+		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.abort(),
-		["<C-u>"] = cmp.mapping.scroll_docs(-4),
-		["<C-d>"] = cmp.mapping.scroll_docs(4),
+		["<C-f>"] = cmp.mapping.scroll_docs(-4),
+		["<C-b>"] = cmp.mapping.scroll_docs(4),
+		["<Tab>"] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.select_next_item({ behavior = "insert" })
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
+		["<S-Tab>"] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.select_prev_item({ behavior = "insert" })
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
 	}),
 	snippet = {
 		expand = function(args)
