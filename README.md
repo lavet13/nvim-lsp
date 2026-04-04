@@ -80,9 +80,11 @@ nvim/  (this IS the repo)
 │       ├── harpoon.lua
 │       ├── lsp.lua
 │       ├── luasnip.lua
+│       ├── obsidian.lua
 │       ├── rose-pine.lua
 │       ├── surround.lua
 │       ├── telescope.lua
+│       ├── todo-comments.lua
 │       └── undotree.lua
 ├── lua/
 │   └── lavet13/
@@ -198,6 +200,92 @@ git config core.symlinks true
 ### Enable Developer Mode (allows symlinks without admin)
 
 `Settings → Privacy & Security → For Developers → Developer Mode → On`
+
+---
+
+## Notes & Task Management
+
+### Obsidian.nvim (Personal Notes)
+
+Obsidian is for **personal notes and ideas** that live outside the codebase. Notes are stored as markdown files in dedicated workspace folders.
+
+#### Setup
+
+Create your workspace folders:
+
+```bash
+mkdir -p ~/notes/personal ~/notes/project1 ~/notes/project2
+```
+
+#### Workspaces
+
+| Workspace  | Purpose                                                 |
+| ---------- | ------------------------------------------------------- |
+| `personal` | Personal thoughts, ideas, anything not project-specific |
+| `project1` | Notes for project 1                                     |
+| `project2` | Notes for project 2                                     |
+
+Switch between workspaces with `<leader>ow`.
+
+#### Keymaps
+
+| Key          | Action                            |
+| ------------ | --------------------------------- |
+| `<leader>on` | Create new note                   |
+| `<leader>oo` | Open note                         |
+| `<leader>os` | Search notes in current workspace |
+| `<leader>oq` | Quick switch between notes        |
+| `<leader>ob` | Show backlinks to current note    |
+| `<leader>ow` | Switch workspace                  |
+
+#### Linking Notes
+
+Type `[[` in any note to get autocomplete of all notes in the current workspace. Creates a wiki-style link like `[[my-note]]`.
+
+| Key                  | Action                                   |
+| -------------------- | ---------------------------------------- |
+| `[[`                 | Start a note link (autocomplete appears) |
+| `gd` on a `[[link]]` | Jump to that note                        |
+
+#### Tips
+
+- Use `conceallevel = 2` in `set.lua` for formatted markdown rendering
+- Notes are just `.md` files — readable anywhere, not locked into any app
+- Keep project-specific ideas in project workspaces, random thoughts in personal
+
+---
+
+### todo-comments.nvim (Shared Notes in Codebase)
+
+Todo comments are for **notes inside the codebase** — visible to everyone who opens the project. Highlighted in different colors based on type.
+
+#### Comment Types
+
+| Tag      | Color  | Purpose                          |
+| -------- | ------ | -------------------------------- |
+| `TODO:`  | Blue   | Things that need to be done      |
+| `FIXME:` | Red    | Broken things that need fixing   |
+| `NOTE:`  | Green  | Important context or explanation |
+| `HACK:`  | Yellow | Temporary workaround             |
+| `WARN:`  | Orange | Be careful here                  |
+| `PERF:`  | Purple | Performance concern              |
+
+#### Usage
+
+```lua
+-- TODO: add input validation here
+-- FIXME: this breaks on Windows
+-- NOTE: this function is called from three places
+-- HACK: temporary fix until API is updated
+```
+
+#### Keymaps
+
+| Key          | Action                                    |
+| ------------ | ----------------------------------------- |
+| `<leader>td` | Search all TODOs in project via Telescope |
+| `[t`         | Jump to next TODO                         |
+| `]t`         | Jump to prev TODO                         |
 
 ---
 
@@ -414,8 +502,8 @@ git config core.symlinks true
 
 | Key          | Action          |
 | ------------ | --------------- |
-| `]h`         | Next hunk       |
-| `[h`         | Prev hunk       |
+| `[h`         | Next hunk       |
+| `]h`         | Prev hunk       |
 | `<leader>hs` | Stage hunk      |
 | `<leader>hr` | Reset hunk      |
 | `<leader>hu` | Undo stage hunk |

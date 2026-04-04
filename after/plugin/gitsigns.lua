@@ -3,8 +3,8 @@ local gs = require("gitsigns")
 gs.setup()
 
 -- Navigation
-vim.keymap.set("n", "]h", gs.next_hunk, { desc = "Next hunk" })
-vim.keymap.set("n", "[h", gs.prev_hunk, { desc = "Prev hunk" })
+vim.keymap.set("n", "[h", gs.next_hunk, { desc = "Next hunk" })
+vim.keymap.set("n", "]h", gs.prev_hunk, { desc = "Prev hunk" })
 
 -- Actions
 vim.keymap.set("n", "<leader>hs", gs.stage_hunk, { desc = "Stage hunk" })

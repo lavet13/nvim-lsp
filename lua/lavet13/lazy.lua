@@ -76,6 +76,40 @@ require("lazy").setup({
 	},
 	"lewis6991/gitsigns.nvim",
 	{
+		"epwalsh/obsidian.nvim",
+		version = "*",
+		lazy = false,
+		ft = "markdown",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		config = function()
+			require("obsidian").setup({
+				workspaces = {
+					{
+						name = "personal",
+						path = "C:/Users/Ivan/notes/personal",
+					},
+					{
+						name = "donbass-post",
+						path = "C:/Users/Ivan/notes/donbass-post",
+					},
+					{
+						name = "donbass-tour",
+						path = "C:/Users/Ivan/notes/donbass-tour",
+					},
+				},
+			})
+		end,
+	},
+	{
+		"folke/todo-comments.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("todo-comments").setup()
+		end,
+	},
+	{
 		"rose-pine/neovim",
 		name = "rose-pine",
 		config = function()
