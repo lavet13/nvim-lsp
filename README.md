@@ -76,17 +76,18 @@ nvim/  (this IS the repo)
 │       ├── commentary.lua
 │       ├── conform.lua
 │       ├── fugitive.lua
+│       ├── gitsigns.lua
 │       ├── harpoon.lua
 │       ├── lsp.lua
+│       ├── luasnip.lua
 │       ├── rose-pine.lua
 │       ├── surround.lua
 │       ├── telescope.lua
-│       ├── treesitter.lua
 │       └── undotree.lua
 ├── lua/
 │   └── lavet13/
 │       ├── init.lua
-│       ├── packer.lua
+│       ├── lazy.lua
 │       ├── remap.lua
 │       └── set.lua
 └── plugin/
@@ -95,35 +96,26 @@ nvim/  (this IS the repo)
 
 ---
 
-### Install Packer (Plugin Manager)
+### Install Lazy.nvim (Plugin Manager)
 
-Run this in Git Bash:
-
-```bash
-git clone https://github.com/wbthomason/packer.nvim \
-  "$LOCALAPPDATA/nvim-data/site/pack/packer/start/packer.nvim"
-```
-
-Then open Neovim and run:
+Lazy.nvim installs itself automatically on first Neovim launch via the bootstrap code in `lazy.lua`. Just open Neovim after cloning and run:
 
 ```
-:PackerSync
+:Lazy sync
 ```
-
-This installs all plugins defined in `packer.lua`. You may need to restart Neovim and run `:PackerSync` once more if you get errors on first run.
 
 ---
 
-### Packer Commands
+### Lazy Commands
 
-| Command          | Action                       |
-| ---------------- | ---------------------------- |
-| `:PackerSync`    | Install + update all plugins |
-| `:PackerInstall` | Install missing plugins only |
-| `:PackerUpdate`  | Update installed plugins     |
-| `:PackerClean`   | Remove unused plugins        |
-| `:PackerStatus`  | List installed plugins       |
-| `:PackerCompile` | Regenerate compiled loader   |
+| Command         | Action                            |
+| --------------- | --------------------------------- |
+| `:Lazy`         | Open Lazy UI                      |
+| `:Lazy sync`    | Install + update all plugins      |
+| `:Lazy install` | Install missing plugins only      |
+| `:Lazy update`  | Update installed plugins          |
+| `:Lazy clean`   | Remove unused plugins             |
+| `:Lazy restore` | Restore plugins to lockfile state |
 
 ---
 
@@ -328,7 +320,32 @@ git config core.symlinks true
 
 ---
 
+### LuaSnip (Snippets)
+
+> Requires `friendly-snippets` and `cmp_luasnip` installed.
+
+| Key                     | Action                                              |
+| ----------------------- | --------------------------------------------------- |
+| `<C-l>` (insert/select) | Expand snippet or jump forward through placeholders |
+| `<C-b>` (insert/select) | Jump backward through placeholders                  |
+
+#### Common React/TSX Snippet Triggers
+
+| Trigger     | Expands to                                 |
+| ----------- | ------------------------------------------ |
+| `rafce`     | React arrow function component with export |
+| `rafc`      | React arrow function component             |
+| `rfc`       | React functional component                 |
+| `useState`  | `const [state, setState] = useState()`     |
+| `useEffect` | `useEffect(() => {}, [])`                  |
+| `imp`       | import statement                           |
+| `imd`       | destructured import                        |
+
+---
+
 ### Treesitter Incremental Selection
+
+> Pinned to nvim-treesitter v0.9.3 for incremental selection support.
 
 | Key                    | Action                            |
 | ---------------------- | --------------------------------- |
@@ -390,6 +407,21 @@ git config core.symlinks true
 | `S"`     | Wrap selection in `"`           |
 | `S)`     | Wrap selection in `()`          |
 | `S<div>` | Wrap selection in `<div></div>` |
+
+---
+
+### Gitsigns
+
+| Key          | Action          |
+| ------------ | --------------- |
+| `]h`         | Next hunk       |
+| `[h`         | Prev hunk       |
+| `<leader>hs` | Stage hunk      |
+| `<leader>hr` | Reset hunk      |
+| `<leader>hu` | Undo stage hunk |
+| `<leader>hp` | Preview hunk    |
+| `<leader>hb` | Blame line      |
+| `<leader>hd` | Diff this       |
 
 ---
 

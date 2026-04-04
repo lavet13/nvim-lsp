@@ -4,6 +4,7 @@ local capabilities = vim.tbl_deep_extend(
 	vim.lsp.protocol.make_client_capabilities(),
 	require("cmp_nvim_lsp").default_capabilities()
 )
+local luasnip = require("luasnip")
 
 -- Apply capabilities and on_attach to ALL servers globally
 vim.lsp.config("*", {
@@ -132,7 +133,9 @@ cmp.setup({
 		["<C-u>"] = cmp.mapping.scroll_docs(-4),
 		["<C-d>"] = cmp.mapping.scroll_docs(4),
 		["<Tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
+			if luasnip.expand_or_jumpable() then
+				luasnip.expand_or_jump()
+			elseif cmp.visible() then
 				cmp.select_next_item({ behavior = "insert" })
 			else
 				fallback()
