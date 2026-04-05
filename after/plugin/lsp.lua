@@ -33,11 +33,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "<leader>vd", function()
 			vim.diagnostic.open_float({ focus = true })
 		end, opts)
-		vim.keymap.set("n", "[d", function()
+		vim.keymap.set("n", "]d", function()
 			vim.diagnostic.jump({ count = 1, float = { focus = true } })
 		end)
 
-		vim.keymap.set("n", "]d", function()
+		vim.keymap.set("n", "[d", function()
 			vim.diagnostic.jump({ count = -1, float = { focus = true } })
 		end)
 		vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)

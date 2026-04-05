@@ -56,7 +56,7 @@ The repo IS the Neovim config — clone it directly into the `nvim` folder:
 
 ```bash
 cd $LOCALAPPDATA
-git clone -c core.symlinks=true <your-repo-url> nvim
+git clone <your-repo-url> nvim
 ```
 
 No symlinking needed. Neovim will pick it up automatically.
@@ -84,16 +84,15 @@ nvim/  (this IS the repo)
 │       ├── rose-pine.lua
 │       ├── surround.lua
 │       ├── telescope.lua
+│       ├── textobjects.lua
 │       ├── todo-comments.lua
 │       └── undotree.lua
-├── lua/
-│   └── lavet13/
-│       ├── init.lua
-│       ├── lazy.lua
-│       ├── remap.lua
-│       └── set.lua
-└── plugin/
-    └── packer_compiled.lua
+└── lua/
+    └── lavet13/
+        ├── init.lua
+        ├── lazy.lua
+        ├── remap.lua
+        └── set.lua
 ```
 
 ---
@@ -172,34 +171,22 @@ WezTerm loads config from `~/.wezterm.lua` on Windows.
 
 ### Creating Symlinks via Git Bash
 
-> **Note:** Windows paths are written as `/c/` instead of `C:\` in Git Bash.
-> The wezterm config lives inside the nvim repo at `~/appdata/local/nvim/.wezterm/`.
+> **Note:** `~` doesn't expand inside Neovim's `:!` commands on Windows.
+> Run these from Git Bash directly using `cmd //c`.
 
-**Symlink for the config file:**
-
-```bash
-ln -s ~/appdata/local/nvim/.wezterm/wezterm.lua ~/.wezterm.lua
-```
-
-**Symlink for the themes folder:**
+**Symlink for the config file (file — use mklink):**
 
 ```bash
-ln -s ~/appdata/local/nvim/.wezterm/themes ~/.wezterm/themes
+cmd //c "mklink %USERPROFILE%\.wezterm.lua %USERPROFILE%\appdata\local\nvim\.wezterm\wezterm.lua"
 ```
 
-### Enable Symlinks in Git
+**Symlink for the themes folder (directory — use mklink /j):**
 
 ```bash
-# When cloning
-git clone -c core.symlinks=true <your-repo-url>
-
-# Or on an existing repo
-git config core.symlinks true
+cmd //c "mklink /j %USERPROFILE%\.wezterm\themes %USERPROFILE%\appdata\local\nvim\.wezterm\themes"
 ```
 
-### Enable Developer Mode (allows symlinks without admin)
-
-`Settings → Privacy & Security → For Developers → Developer Mode → On`
+> `/j` creates a directory junction which doesn't require admin privileges.
 
 ---
 
@@ -217,6 +204,23 @@ Create your workspace folders:
 mkdir -p ~/notes/personal ~/notes/project1 ~/notes/project2
 ```
 
+Add to `set.lua` for proper markdown rendering inside Neovim:
+
+```lua
+vim.opt.conceallevel = 2
+```
+
+A good starting structure per workspace:
+
+```
+project1/
+├── ideas.md        -- random ideas dump
+├── architecture.md -- technical decisions
+└── bugs.md         -- known issues and findings
+```
+
+> You can delete the auto-generated frontmatter (`id`, `aliases`, `tags`) if you don't need it — obsidian.nvim works fine without it for basic note taking. Keeping `aliases` with the note's own name causes self-referencing in backlinks, so either clear it or remove the frontmatter entirely.
+
 #### Workspaces
 
 | Workspace  | Purpose                                                 |
@@ -229,29 +233,28 @@ Switch between workspaces with `<leader>ow`.
 
 #### Keymaps
 
-| Key          | Action                            |
-| ------------ | --------------------------------- |
-| `<leader>on` | Create new note                   |
-| `<leader>oo` | Open note                         |
-| `<leader>os` | Search notes in current workspace |
-| `<leader>oq` | Quick switch between notes        |
-| `<leader>ob` | Show backlinks to current note    |
-| `<leader>ow` | Switch workspace                  |
+| Key          | Action                                               |
+| ------------ | ---------------------------------------------------- |
+| `<leader>on` | Create new note                                      |
+| `<leader>oo` | Open note                                            |
+| `<leader>os` | Search notes in current workspace                    |
+| `<leader>oq` | Quick switch between notes (full Telescope picker)   |
+| `<leader>ob` | Show backlinks — notes that link TO the current note |
+| `<leader>ow` | Switch workspace                                     |
 
 #### Linking Notes
 
-Type `[[` in any note to get autocomplete of all notes in the current workspace. Creates a wiki-style link like `[[my-note]]`.
+Type `[[` then start typing the note name — obsidian triggers its own completion picker (separate from nvim-cmp). You must type at least 1-2 characters to get results.
 
-| Key                  | Action                                   |
-| -------------------- | ---------------------------------------- |
-| `[[`                 | Start a note link (autocomplete appears) |
-| `gd` on a `[[link]]` | Jump to that note                        |
+| Key                  | Action                                       |
+| -------------------- | -------------------------------------------- |
+| `[[` + typing        | Link to another note (obsidian autocomplete) |
+| `gf` on a `[[link]]` | Jump to that note                            |
+| `<leader>ob`         | Show all notes that link TO current note     |
 
-#### Tips
+> **Backlinks explained:** `<leader>ob` shows notes that contain a `[[link]]` pointing to the current note. If your cursor is ON a `[[link]]`, obsidian shows backlinks for that linked note instead. When cursor is elsewhere, it shows backlinks for the current note.
 
-- Use `conceallevel = 2` in `set.lua` for formatted markdown rendering
-- Notes are just `.md` files — readable anywhere, not locked into any app
-- Keep project-specific ideas in project workspaces, random thoughts in personal
+> **Quick switch tip:** Use `<leader>oq` instead of `[[` when you want to see all notes immediately without typing — it opens a full Telescope picker.
 
 ---
 
@@ -272,11 +275,12 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 
 #### Usage
 
-```lua
--- TODO: add input validation here
--- FIXME: this breaks on Windows
--- NOTE: this function is called from three places
--- HACK: temporary fix until API is updated
+```typescript
+// TODO: add input validation here
+// FIXME: this crashes when user has no avatar, needs null check
+// NOTE: this component re-renders on every keystroke, intentional
+// HACK: using setTimeout because the animation library has no callback
+// WARN: changing this function signature breaks three other components
 ```
 
 #### Keymaps
@@ -286,6 +290,8 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 | `<leader>td` | Search all TODOs in project via Telescope |
 | `[t`         | Jump to next TODO                         |
 | `]t`         | Jump to prev TODO                         |
+
+> **Tip:** Use `<leader>td` before a PR to review all leftover TODOs and FIXMEs across the entire project in one Telescope window.
 
 ---
 
@@ -434,12 +440,60 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 ### Treesitter Incremental Selection
 
 > Pinned to nvim-treesitter v0.9.3 for incremental selection support.
+> Neovim 0.12 is expected to bring native incremental selection — migration planned then.
 
 | Key                    | Action                            |
 | ---------------------- | --------------------------------- |
 | `<C-Space>` (normal)   | Start selecting node under cursor |
 | `<C-Space>` (visual)   | Expand selection to parent node   |
 | `<Backspace>` (visual) | Shrink selection back             |
+
+---
+
+### nvim-treesitter-textobjects
+
+> Syntax-aware text objects powered by treesitter.
+> Works as motions — composable with nvim-surround, `d`, `y`, `c` etc.
+
+#### Select text objects (visual / operator pending)
+
+| Key  | Action                            |
+| ---- | --------------------------------- |
+| `af` | Around function (entire function) |
+| `if` | Inner function (body only)        |
+| `ac` | Around class                      |
+| `ic` | Inner class                       |
+| `aa` | Around argument/parameter         |
+| `ia` | Inner argument/parameter          |
+
+#### Move between text objects
+
+| Key  | Action              |
+| ---- | ------------------- |
+| `]f` | Next function start |
+| `[f` | Prev function start |
+| `]c` | Next class start    |
+| `[c` | Prev class start    |
+| `]a` | Next parameter      |
+| `[a` | Prev parameter      |
+
+#### Swap parameters
+
+| Key          | Action                       |
+| ------------ | ---------------------------- |
+| `<leader>sa` | Swap parameter with next     |
+| `<leader>sA` | Swap parameter with previous |
+
+#### nvim-surround combinations
+
+| Key           | Action                                   |
+| ------------- | ---------------------------------------- |
+| `ysaf"`       | Surround entire function with `"`        |
+| `ysif)`       | Surround function body with `()`         |
+| `ysac<div>`   | Surround entire class with `<div></div>` |
+| `ysaa"`       | Surround entire argument with `"`        |
+| `dsaf`        | Delete surrounding of entire function    |
+| `vaf then S"` | Select function then surround with `"`   |
 
 ---
 
@@ -502,8 +556,8 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 
 | Key          | Action          |
 | ------------ | --------------- |
-| `[h`         | Next hunk       |
-| `]h`         | Prev hunk       |
+| `[h`         | Prev hunk       |
+| `]h`         | Next hunk       |
 | `<leader>hs` | Stage hunk      |
 | `<leader>hr` | Reset hunk      |
 | `<leader>hu` | Undo stage hunk |
