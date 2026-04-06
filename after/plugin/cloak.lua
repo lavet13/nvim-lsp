@@ -20,3 +20,6 @@ require("cloak").setup({
   },
 })
 
+-- :CloakDisable — temporarily reveal all secrets
+-- :CloakEnable — re-enable
+-- :CloakToggle — toggle on/off

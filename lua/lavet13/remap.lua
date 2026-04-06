@@ -46,3 +46,14 @@ vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>")
 vim.keymap.set("n", "<leader><leader>", function()
 	vim.cmd("so")
 end)
+
+-- Luasnip
+vim.keymap.set("i", "<C-e>", function()
+	if require("luasnip").in_snippet() then
+		return "<Esc>ua"
+	else
+		return "<C-e>"
+	end
+end, { expr = true, desc = "Exit snippet and undo in insert mode" })
+
+vim.keymap.set("s", "<C-e>", "<Esc>ua", { desc = "Exit snippet and undo in select mode" })
