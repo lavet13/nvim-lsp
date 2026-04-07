@@ -264,16 +264,17 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 
 #### Comment Types
 
-| Tag      | Color  | Purpose                          |
-| -------- | ------ | -------------------------------- |
-| `TODO:`  | Blue   | Things that need to be done      |
-| `FIXME:` | Red    | Broken things that need fixing   |
-| `NOTE:`  | Green  | Important context or explanation |
-| `HACK:`  | Yellow | Temporary workaround             |
-| `WARN:`  | Orange | Be careful here                  |
-| `PERF:`  | Purple | Performance concern              |
+| Tag     | Aliases                             | Color  | Purpose                          |
+| ------- | ----------------------------------- | ------ | -------------------------------- |
+| `TODO:` | —                                   | Blue   | Things that need to be done      |
+| `FIX:`  | `FIXME:` `BUG:` `FIXIT:` `ISSUE:`   | Red    | Broken things that need fixing   |
+| `HACK:` | —                                   | Yellow | Temporary workaround             |
+| `WARN:` | `WARNING:` `XXX:`                   | Yellow | Be careful here                  |
+| `PERF:` | `OPTIM:` `PERFORMANCE:` `OPTIMIZE:` | Purple | Performance concern              |
+| `NOTE:` | `INFO:`                             | Green  | Important context or explanation |
+| `TEST:` | `TESTING:` `PASSED:` `FAILED:`      | Pink   | Test-related notes               |
 
-#### Usage
+#### Usage example
 
 ```typescript
 // TODO: add input validation here
@@ -442,11 +443,11 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 > Pinned to nvim-treesitter v0.9.3 for incremental selection support.
 > Neovim 0.12 is expected to bring native incremental selection — migration planned then.
 
-| Key                    | Action                            |
-| ---------------------- | --------------------------------- |
-| `<C-Space>` (normal)   | Start selecting node under cursor |
-| `<C-Space>` (visual)   | Expand selection to parent node   |
-| `<Backspace>` (visual) | Shrink selection back             |
+| Key              | Action                            |
+| ---------------- | --------------------------------- |
+| `<A-o>` (normal) | Start selecting node under cursor |
+| `<A-o>` (visual) | Expand selection to parent node   |
+| `<A-i>` (visual) | Shrink selection back             |
 
 ---
 
@@ -454,28 +455,56 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 
 > Syntax-aware text objects powered by treesitter.
 > Works as motions — composable with nvim-surround, `d`, `y`, `c` etc.
+>
+> Functions and classes are selected **linewise** (`V`) — the entire line(s) are
+> included, which makes delete/yank/paste cleaner for block-level constructs.
+> Parameters are selected charwise as usual.
 
 #### Select text objects (visual / operator pending)
 
-| Key  | Action                            |
-| ---- | --------------------------------- |
-| `af` | Around function (entire function) |
-| `if` | Inner function (body only)        |
-| `ac` | Around class                      |
-| `ic` | Inner class                       |
-| `aa` | Around argument/parameter         |
-| `ia` | Inner argument/parameter          |
+| Key  | Action                                      |
+| ---- | ------------------------------------------- |
+| `af` | Around function (entire function)           |
+| `if` | Inner function (body only)                  |
+| `ac` | Around class                                |
+| `ic` | Inner class                                 |
+| `aa` | Around argument/parameter                   |
+| `ia` | Inner argument/parameter                    |
+| `as` | Around scope (function, if, for block etc.) |
 
 #### Move between text objects
 
-| Key  | Action              |
-| ---- | ------------------- |
-| `]f` | Next function start |
-| `[f` | Prev function start |
-| `]c` | Next class start    |
-| `[c` | Prev class start    |
-| `]a` | Next parameter      |
-| `[a` | Prev parameter      |
+| Key  | Action                     |
+| ---- | -------------------------- |
+| `]f` | Next function start        |
+| `[f` | Prev function start        |
+| `]M` | Next function end          |
+| `[M` | Prev function end          |
+| `]c` | Next class start           |
+| `[c` | Prev class start           |
+| `][` | Next class end             |
+| `[]` | Prev class end             |
+| `]a` | Next parameter start       |
+| `[a` | Prev parameter start       |
+| `]A` | Next parameter end         |
+| `[A` | Prev parameter end         |
+| `]o` | Next loop (inner or outer) |
+| `[o` | Prev loop (inner or outer) |
+| `]i` | Next conditional (if/else) |
+| `[i` | Prev conditional (if/else) |
+
+> **`]i` / `[i` note:** Uses `goto_next` (not `goto_next_start`) — lands on whichever
+> boundary of the conditional (start or end) is closest to your cursor.
+
+#### Repeatable move
+
+> `;` and `,` repeat the last textobject jump — same direction or opposite.
+> `f`, `F`, `t`, `T` are also part of this system so everything is unified.
+
+| Key | Action                      |
+| --- | --------------------------- |
+| `;` | Repeat last move (forward)  |
+| `,` | Repeat last move (backward) |
 
 #### Swap parameters
 
@@ -516,6 +545,13 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 > `ys` waits for a motion then a surrounding character — it's a 3 part command.
 > Think of it like `d` needing `dw`, `dd` etc.
 
+> **Space rule:** opening delimiter adds spaces, closing does not.
+> `ysiw(` → `( word )` — `ysiw)` → `(word)`. Same applies to `[`/`]` and `{`/`}`.
+
+> **Quote alias:** `q` matches the nearest set of quotes regardless of type (`` ` ``, `'`, `"`).
+> Useful when you don't know or care which quote type you're inside — `csqb` replaces
+> the nearest quotes with parentheses, `dsq` deletes them.
+
 #### Add surrounding — `ys{motion}{char}`
 
 | Key     | Action                                     |
@@ -533,14 +569,17 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 | `cs'`` ` | Change `'` to `` ` ``              |
 | `cs)]`   | Change `)` to `]`                  |
 | `cst"`   | Change surrounding HTML tag to `"` |
+| `csqb`   | Change nearest quotes to `()`      |
 
 #### Delete surrounding — `ds{char}`
 
-| Key   | Action                      |
-| ----- | --------------------------- |
-| `ds"` | Delete surrounding `"`      |
-| `ds)` | Delete surrounding `()`     |
-| `dst` | Delete surrounding HTML tag |
+| Key   | Action                                                                   |
+| ----- | ------------------------------------------------------------------------ |
+| `ds"` | Delete surrounding `"`                                                   |
+| `ds)` | Delete surrounding `()`                                                  |
+| `dst` | Delete surrounding HTML tag                                              |
+| `dsf` | Delete surrounding function call, keeping arguments — `foo(bar)` → `bar` |
+| `dsq` | Delete nearest quotes (any type)                                         |
 
 #### Visual mode — select text then `S{char}`
 
@@ -549,6 +588,13 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 | `S"`     | Wrap selection in `"`           |
 | `S)`     | Wrap selection in `()`          |
 | `S<div>` | Wrap selection in `<div></div>` |
+
+#### Insert mode
+
+| Key      | Action                                     |
+| -------- | ------------------------------------------ |
+| `<C-g>s` | Add surrounding around cursor position     |
+| `<C-g>S` | Add surrounding on new lines around cursor |
 
 ---
 
@@ -623,6 +669,67 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 | `:CloakToggle`  | Toggle cloaking on/off         |
 | `:CloakEnable`  | Enable cloaking                |
 | `:CloakDisable` | Temporarily reveal all secrets |
+
+---
+
+### Splits & Windows
+
+> These are built-in Neovim commands — no plugin required.
+> Note: `<C-S-h/l/k/j>` in the WezTerm section navigates terminal _panes_ — a different thing.
+
+| Key            | Action                       |
+| -------------- | ---------------------------- |
+| `<C-w>s`       | Horizontal split             |
+| `<C-w>v`       | Vertical split               |
+| `<C-w>h/j/k/l` | Move between splits          |
+| `<C-w>H/J/K/L` | Move split to edge of screen |
+| `<C-w>=`       | Equalize all split sizes     |
+| `<C-w>_`       | Maximize split height        |
+| `<C-w>\|`      | Maximize split width         |
+| `<C-w>q`       | Close current split          |
+| `<C-w>o`       | Close all other splits       |
+
+---
+
+### Marks
+
+> Marks let you set named positions you can jump back to — within a file or globally.
+
+| Key           | Action                                      |
+| ------------- | ------------------------------------------- |
+| `m{a-z}`      | Set a local mark (file-scoped)              |
+| `m{A-Z}`      | Set a global mark (works across files)      |
+| `` `{mark} `` | Jump to exact mark position (line + column) |
+| `'{mark}`     | Jump to mark line (first non-blank)         |
+| `''`          | Jump back to position before last jump      |
+| `<C-o>`       | Go back in jump history                     |
+| `<C-i>`       | Go forward in jump history                  |
+| `:marks`      | List all marks                              |
+
+> **Local vs global:** lowercase marks (`ma`) only work in the file they were set in.
+> Uppercase marks (`mA`) jump to the right file automatically — useful as cross-file bookmarks.
+> Combine with harpoon: harpoon for files you're actively working across, marks for
+> positions within a single file you keep returning to.
+
+---
+
+### Macros
+
+> Macros record a sequence of keystrokes into a register and replay them on demand.
+> The most powerful built-in tool for repetitive structural edits.
+
+| Key         | Action                              |
+| ----------- | ----------------------------------- |
+| `q{a-z}`    | Start recording macro into register |
+| `q`         | Stop recording                      |
+| `@{a-z}`    | Play macro                          |
+| `@@`        | Repeat last played macro            |
+| `{N}@{a-z}` | Play macro N times                  |
+| `:reg`      | View all registers and macros       |
+
+> **Tip:** Record into `q` as your scratch register (`qq` to start, `q` to stop, `@q` to play).
+> Use named registers (`a`–`z`) for macros you want to keep across the session.
+> `{N}@q` is the most common pattern — e.g. `10@q` to repeat an edit on 10 lines.
 
 ---
 
