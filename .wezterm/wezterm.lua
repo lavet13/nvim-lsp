@@ -29,6 +29,8 @@ return {
 	},
 	color_scheme = "Rose Pine",
 
+	default_cursor_style = "SteadyBlock",
+
 	-- Shell
 	default_prog = { "G:/Programs/Git/bin/bash.exe" },
 
