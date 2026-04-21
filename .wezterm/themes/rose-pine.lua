@@ -1,14 +1,12 @@
 return {
 	foreground = "#e0def4",
 	background = "#191724",
-
 	-- cursor_bg = "#e0def4", -- Brighter cursor background
 	-- cursor_fg = "#191724", -- Contrast with the background color
 	-- cursor_border = "#e0def4", -- Match the brighter cursor background
 	cursor_bg = "#f6c177", -- Gold background
 	cursor_fg = "#191724", -- Dark foreground for contrast
-	cursor_border = "#fae8b4", -- Same gold for the border
-
+	cursor_border = "#f6c177", -- Same gold for the border
 	selection_fg = "#e0def4",
 	selection_bg = "#403d52",
 	ansi = {
