@@ -1,10 +1,7 @@
 local wezterm = require("wezterm")
 
 -- Load the themes
-local bright_burn_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/bright-burn.lua")
-local rose_pine_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/rose-pine.lua")
-local yin_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/yin.lua")
-local yang_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/yang.lua")
+local rose_pine_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/rose-pine.lua").main
 
 return {
 	-- General appearance
@@ -21,13 +18,8 @@ return {
 	initial_rows = 30,
 	initial_cols = 120,
 	enable_tab_bar = true,
-	color_schemes = {
-		["Bright Burn"] = bright_burn_theme,
-		["Rose Pine"] = rose_pine_theme,
-		["Yin"] = yin_theme,
-		["Yang"] = yang_theme,
-	},
-	color_scheme = "Rose Pine",
+  colors = rose_pine_theme.colors(),
+  window_frame = rose_pine_theme.window_frame(),
 
 	default_cursor_style = "SteadyBlock",
 

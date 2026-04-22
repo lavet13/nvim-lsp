@@ -1,32 +1,78 @@
-return {
-	foreground = "#e0def4",
-	background = "#191724",
-	-- cursor_bg = "#e0def4", -- Brighter cursor background
-	-- cursor_fg = "#191724", -- Contrast with the background color
-	-- cursor_border = "#e0def4", -- Match the brighter cursor background
-	cursor_bg = "#f6c177", -- Gold background
-	cursor_fg = "#191724", -- Dark foreground for contrast
-	cursor_border = "#f6c177", -- Same gold for the border
-	selection_fg = "#e0def4",
-	selection_bg = "#403d52",
-	ansi = {
-		"#26233a", -- black
-		"#eb6f92", -- red
-		"#31748f", -- green
-		"#f6c177", -- yellow
-		"#9ccfd8", -- blue
-		"#c4a7e7", -- magenta
-		"#ebbcba", -- cyan
-		"#e0def4", -- white
-	},
-	brights = {
-		"#6e6a86", -- bright black
-		"#eb6f92", -- bright red
-		"#31748f", -- bright green
-		"#f6c177", -- bright yellow
-		"#9ccfd8", -- bright blue
-		"#c4a7e7", -- bright magenta
-		"#ebbcba", -- bright cyan
-		"#e0def4", -- bright white
-	},
+local main = {}
+
+local main_palette = {
+	base = "#191724",
+	overlay = "#26233a",
+	muted = "#6e6a86",
+	text = "#e0def4",
+	love = "#eb6f92",
+	gold = "#f6c177",
+	rose = "#ebbcba",
+	pine = "#31748f",
+	foam = "#9ccfd8",
+	iris = "#c4a7e7",
+	highlight_high = "#524f67",
 }
+
+local main_active_tab = {
+	bg_color = main_palette.overlay,
+	fg_color = main_palette.text,
+}
+
+local main_inactive_tab = {
+	bg_color = main_palette.base,
+	fg_color = main_palette.muted,
+}
+
+function main.colors()
+	return {
+		foreground = main_palette.text,
+		background = main_palette.base,
+		cursor_bg = main_palette.gold, -- Gold background
+		cursor_border = main_palette.gold, -- Same gold for the border
+		cursor_fg = main_palette.base, -- Dark foreground for contrast
+		selection_bg = "#2a283e",
+		selection_fg = main_palette.text,
+
+		ansi = {
+			main_palette.overlay, -- black
+			main_palette.love, -- red
+			main_palette.pine, -- green
+			main_palette.gold, -- yellow
+			main_palette.foam, -- blue
+			main_palette.iris, -- magenta
+			main_palette.rose, -- cyan
+			main_palette.text, -- white
+		},
+
+		brights = {
+			main_palette.muted,
+			main_palette.love,
+			main_palette.pine,
+			main_palette.gold,
+			main_palette.foam,
+			main_palette.iris,
+			main_palette.rose,
+			main_palette.text,
+		},
+
+		tab_bar = {
+			background = main_palette.base,
+			active_tab = main_active_tab,
+			inactive_tab = main_inactive_tab,
+			inactive_tab_hover = main_active_tab,
+			new_tab = main_inactive_tab,
+			new_tab_hover = main_active_tab,
+			inactive_tab_edge = main_palette.muted, -- (Fancy tab bar only)
+		},
+	}
+end
+
+function main.window_frame()
+	return {
+		active_titlebar_bg = main_palette.base,
+		inactive_titlebar_bg = main_palette.base,
+	}
+end
+
+return { main = main }
