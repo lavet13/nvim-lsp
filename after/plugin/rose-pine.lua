@@ -6,8 +6,8 @@ require("rose-pine").setup({
 	highlight_groups = {
 		Comment = { italic = true },
 		Cursor = {
-			fg = "#191724",
-			bg = "#e0def4",
+			fg = "#e0def4",
+			bg = "#524f67",
 		},
 	},
 })
