@@ -28,9 +28,9 @@ function main.colors()
 	return {
 		foreground = main_palette.text,
 		background = main_palette.base,
-		cursor_bg = main_palette.gold, -- Gold background
-		cursor_border = main_palette.gold, -- Same gold for the border
-		cursor_fg = main_palette.base, -- Dark foreground for contrast
+		cursor_bg = main_palette.text,
+		cursor_border = main_palette.text,
+		cursor_fg = main_palette.base,
 		selection_bg = "#2a283e",
 		selection_fg = main_palette.text,
 

@@ -5,12 +5,9 @@ require("rose-pine").setup({
 	disable_italics = true,
 	highlight_groups = {
 		Comment = { italic = true },
-		-- Cursor = { fg = "#191724", bg = "#e0def4" },
 		Cursor = {
-			fg = "#191724", -- dark text
-			bg = "#f6c177", -- gold background
+			fg = "#191724",
+			bg = "#e0def4",
 		},
-		-- Optional: also make the cursor line number stand out a bit
-		CursorLineNr = { fg = "#f6c177" },
 	},
 })
