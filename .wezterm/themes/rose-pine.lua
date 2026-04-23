@@ -75,4 +75,82 @@ function main.window_frame()
 	}
 end
 
-return { main = main }
+
+local moon = {}
+
+local moon_palette = {
+   base = '#232136',
+   overlay = '#393552',
+   muted = '#6e6a86',
+   text = '#e0def4',
+   love = '#eb6f92',
+   gold = '#f6c177',
+   -- rose = '#ea9a97',
+   pine = '#3e8fb0',
+   foam = '#9ccfd8',
+   iris = '#c4a7e7',
+   -- highlight_high = '#56526e',
+}
+
+local moon_active_tab = {
+   bg_color = moon_palette.overlay,
+   fg_color = moon_palette.text,
+}
+
+local moon_inactive_tab = {
+   bg_color = moon_palette.base,
+   fg_color = moon_palette.muted,
+}
+
+function moon.colors()
+   return {
+      foreground = moon_palette.text,
+      background = moon_palette.base,
+      cursor_bg = moon_palette.text,
+      cursor_border = moon_palette.text,
+      cursor_fg = moon_palette.base,
+      selection_bg = moon_palette.overlay,
+      selection_fg = moon_palette.text,
+
+      ansi = {
+         moon_palette.overlay,
+         moon_palette.love,
+         moon_palette.pine,
+         moon_palette.gold,
+         moon_palette.foam,
+         moon_palette.iris,
+         '#ebbcba', -- replacement for rose,
+         moon_palette.text,
+      },
+
+      brights = {
+         '#817c9c', -- replacement for muted,
+         moon_palette.love,
+         moon_palette.pine,
+         moon_palette.gold,
+         moon_palette.foam,
+         moon_palette.iris,
+         '#ebbcba', -- replacement for rose,
+         moon_palette.text,
+      },
+
+      tab_bar = {
+         background = moon_palette.base,
+         active_tab = moon_active_tab,
+         inactive_tab = moon_inactive_tab,
+         inactive_tab_hover = moon_active_tab,
+         new_tab = moon_inactive_tab,
+         new_tab_hover = moon_active_tab,
+         inactive_tab_edge = moon_palette.muted, -- (Fancy tab bar only)
+      },
+   }
+end
+
+function moon.window_frame() -- (Fancy tab bar only)
+   return {
+      active_titlebar_bg = moon_palette.base,
+      inactive_titlebar_bg = moon_palette.base,
+   }
+end
+
+return { main = main, moon = moon }

@@ -1,7 +1,8 @@
 local wezterm = require("wezterm")
 
 -- Load the themes
-local rose_pine_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/rose-pine.lua").main
+local rose_pine_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/rose-pine.lua")
+local rose_pine_theme_main, rose_pine_theme_moon = rose_pine_theme.main, rose_pine_theme.moon
 
 return {
 	-- General appearance
@@ -18,8 +19,8 @@ return {
 	initial_rows = 30,
 	initial_cols = 120,
 	enable_tab_bar = true,
-  colors = rose_pine_theme.colors(),
-  window_frame = rose_pine_theme.window_frame(),
+  colors = rose_pine_theme_main.colors(),
+  window_frame = rose_pine_theme_main.window_frame(),
 
 	default_cursor_style = "SteadyBlock",
 
