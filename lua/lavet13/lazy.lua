@@ -65,15 +65,15 @@ require("lazy").setup({
 				workspaces = {
 					{
 						name = "personal",
-						path = "C:/Users/Ivan/notes/personal",
+						path = "~/notes/personal",
 					},
 					{
 						name = "donbass-post",
-						path = "C:/Users/Ivan/notes/donbass-post",
+						path = "~/notes/donbass-post",
 					},
 					{
 						name = "donbass-tour",
-						path = "C:/Users/Ivan/notes/donbass-tour",
+						path = "~/notes/donbass-tour",
 					},
 				},
 			})
