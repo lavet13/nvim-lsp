@@ -11,6 +11,8 @@ require("nvim-treesitter.configs").setup({
 		"html",
 		"vim",
 		"yaml",
+		"markdown", -- add this
+		"markdown_inline", -- and this — handles inline syntax inside markdown
 	},
 	sync_install = false,
 
