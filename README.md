@@ -753,47 +753,73 @@ Todo comments are for **notes inside the codebase** — visible to everyone who 
 | `<leader>mr`  | Cellular Automaton make it rain 🌧️     |
 | `<leader>vpp` | Open packer.lua directly               |
 
-### Мини cookbook: merge `--no-ff` и cherry-pick
+### Git workflow (ветки `main` и `nvim-0.11`)
 
-Ниже короткий практический сценарий для ветки поддержки `nvim-0.11`.
+Ниже практичный workflow, если `nvim-0.11` — ветка поддержки, а `main` — основная ветка.
+
+#### 1) Вносим изменения в ветке поддержки `nvim-0.11`
+
+**Вариант A (рекомендуется): через feature-ветку + PR в `nvim-0.11`**
 
 ```bash
-# 1) Вносим фикс в ветку поддержки
 git checkout nvim-0.11
 git pull
-git checkout -b fix/obsidian-path
+git checkout -b fix/readme-workflow
 # ... правки ...
 git add .
-git commit -m "fix(obsidian): adjust workspace path handling"
-git push -u origin fix/obsidian-path
-# (создай PR в nvim-0.11 и смержи)
+git commit -m "docs(readme): improve git workflow"
+git push -u origin fix/readme-workflow
+# далее PR: fix/readme-workflow -> nvim-0.11
 ```
 
-```bash
-# 2A) Перенести ВСЕ изменения из nvim-0.11 в main как отдельный merge-коммит
-git checkout main
-git pull
-git merge --no-ff nvim-0.11 -m "merge: bring nvim-0.11 maintenance updates"
-git push
-```
+**Вариант B (быстро, если ты один): commit прямо в `nvim-0.11`**
 
 ```bash
-# 2B) Перенести только ОДИН нужный коммит в main (без полного merge)
-git checkout main
-git pull
-git log --oneline nvim-0.11
-# выбери нужный SHA, например abc1234
-git cherry-pick abc1234
-git push
-```
-
-```bash
-# 3) Создать новый стабильный snapshot-тег в ветке поддержки
-# (старый тег nvim-0.11.6 НЕ трогаем)
 git checkout nvim-0.11
 git pull
-git tag -a nvim-0.11.6-r1 -m "maintenance release for Neovim 0.11.6"
+# ... правки ...
+git add .
+git commit -m "docs(readme): improve git workflow"
+git push
+```
+
+#### 2) Переносим изменения из `nvim-0.11` в `main`
+
+Сначала проверь, какие коммиты есть только в ветке поддержки:
+
+```bash
+git log --oneline main..nvim-0.11
+```
+
+**Вариант A: перенести всё сразу merge-коммитом**
+
+```bash
+git checkout main
+git pull
+git merge --no-ff nvim-0.11 -m "merge: sync maintenance updates from nvim-0.11"
+git push origin main
+```
+
+`--no-ff` здесь сохраняет явный merge-коммит в истории, чтобы было видно, что изменения пришли из ветки поддержки.
+
+**Вариант B: перенести только конкретный коммит (cherry-pick)**
+
+```bash
+git checkout main
+git pull
+git cherry-pick <commit_sha>
+git push origin main
+```
+
+Используй `cherry-pick`, когда не хочешь тащить все изменения из `nvim-0.11`.
+
+#### 3) Создаём snapshot-теги для стабильных точек
+
+```bash
+git checkout nvim-0.11
+git pull
+git tag -a nvim-0.11.6-r1 -m "maintenance snapshot for Neovim 0.11.6"
 git push origin nvim-0.11.6-r1
 ```
 
-Почему `--no-ff` полезен: даже когда Git может просто "подвинуть" указатель `main`, флаг заставляет создать явный merge-коммит, чтобы в истории было видно, что изменения пришли именно из ветки `nvim-0.11`.
+Правило: старые теги не передвигаем. Для нового состояния создаём новый тег (`-r2`, `-r3`, и т.д.).
