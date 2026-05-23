@@ -94,11 +94,18 @@ require("lazy").setup({
 				disable_italics = true,
 				highlight_groups = {
 					Comment = { italic = true },
+					Cursor = {
+						fg = "#e0def4",
+						bg = "#524f67",
+					},
+				},
+				styles = {
+					transparency = true,
 				},
 			})
 		end,
 	},
-  "RostislavArts/naysayer.nvim",
+	"RostislavArts/naysayer.nvim",
 	"theprimeagen/harpoon",
 	"mbbill/undotree",
 	"tpope/vim-fugitive",
