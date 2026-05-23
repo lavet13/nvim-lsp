@@ -11,6 +11,7 @@ local palette = {
   magenta = "#c586c0",
   blue = "#9cdcfe",
   cursor_color = "#90EE90",
+  highlight = "#0010FF",
 }
 
 local active_tab = {
@@ -30,8 +31,8 @@ function naysayer.colors()
     cursor_bg = palette.cursor_color,
     cursor_fg = palette.bg,
     cursor_border = palette.cursor_color,
-    selection_fg = palette.bg,
-    selection_bg = palette.overlay,
+    selection_fg = palette.text,
+    selection_bg = palette.highlight,
 
     ansi = {
       palette.bg,       -- black
