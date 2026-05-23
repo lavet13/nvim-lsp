@@ -10,7 +10,7 @@ local palette = {
   teal = "#4ec9b0",
   magenta = "#c586c0",
   blue = "#9cdcfe",
-  cursor_color = "#90C090",
+  cursor_color = "#90EE90",
 }
 
 local active_tab = {
