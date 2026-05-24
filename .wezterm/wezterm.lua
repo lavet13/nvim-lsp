@@ -28,6 +28,12 @@ return {
 	-- Shell
 	default_prog = { "G:/Programs/Git/bin/bash.exe" },
 
+  scrollback_lines = 10000,
+
+  -- useful when you change font size at runtime with Ctrl+Shift+=/-.
+  -- Without it the window resizes instead of reflowing:
+  adjust_window_size_when_changing_font_size = false,
+
 	-- Key bindings
 	keys = {
 		-- Split panes
@@ -53,11 +59,11 @@ return {
 		{ key = "k", mods = "CTRL|SHIFT", action = wezterm.action.ActivatePaneDirection("Up") },
 		{ key = "j", mods = "CTRL|SHIFT", action = wezterm.action.ActivatePaneDirection("Down") },
 
-		-- Resizing panes
-		{ key = "LeftArrow", mods = "CTRL|SHIFT", action = wezterm.action({ AdjustPaneSize = { "Left", 1 } }) },
-		{ key = "RightArrow", mods = "CTRL|SHIFT", action = wezterm.action({ AdjustPaneSize = { "Right", 1 } }) },
-		{ key = "UpArrow", mods = "CTRL|SHIFT", action = wezterm.action({ AdjustPaneSize = { "Up", 1 } }) },
-		{ key = "DownArrow", mods = "CTRL|SHIFT", action = wezterm.action({ AdjustPaneSize = { "Down", 1 } }) },
+    -- -- Resizing panes — ALT+h/j/k/l, amount 3 cols/rows per press
+		{ key = "h", mods = "ALT", action = wezterm.action({ AdjustPaneSize = { "Left", 3 } }) },
+		{ key = "l", mods = "ALT", action = wezterm.action({ AdjustPaneSize = { "Right", 3 } }) },
+		{ key = "k", mods = "ALT", action = wezterm.action({ AdjustPaneSize = { "Up", 3 } }) },
+		{ key = "j", mods = "ALT", action = wezterm.action({ AdjustPaneSize = { "Down", 3 } }) },
 
 		-- Create new window
 		{ key = "N", mods = "CTRL|SHIFT", action = wezterm.action.SpawnWindow },
