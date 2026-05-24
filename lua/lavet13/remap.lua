@@ -59,3 +59,12 @@ vim.keymap.set("i", "<C-e>", function()
 end, { expr = true, desc = "Exit snippet and undo in insert mode" })
 
 vim.keymap.set("s", "<C-e>", "<Esc>ua", { desc = "Exit snippet and undo in select mode" })
+
+-- Nvim-aware tmux navigation
+-- When in nvim, these pass the keypress to tmux which then
+-- moves to the adjacent tmux pane — same keys as moving between nvim splits.
+-- Works together with the is_vim check in .tmux.conf.
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to left split/pane" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to bottom split/pane" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to top split/pane" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to right split/pane" })
