@@ -20,19 +20,19 @@ return {
 	initial_rows = 30,
 	initial_cols = 120,
 	enable_tab_bar = true,
-  colors = naysayer_theme.colors(),
-  window_frame = naysayer_theme.window_frame(),
+	colors = naysayer_theme.colors(),
+	window_frame = naysayer_theme.window_frame(),
 
 	default_cursor_style = "SteadyBlock",
 
 	-- Shell
 	default_prog = { "G:/Programs/Git/bin/bash.exe" },
 
-  scrollback_lines = 10000,
+	scrollback_lines = 10000,
 
-  -- useful when you change font size at runtime with Ctrl+Shift+=/-.
-  -- Without it the window resizes instead of reflowing:
-  adjust_window_size_when_changing_font_size = false,
+	-- useful when you change font size at runtime with Ctrl+Shift+=/-.
+	-- Without it the window resizes instead of reflowing:
+	adjust_window_size_when_changing_font_size = false,
 
 	-- Key bindings
 	keys = {
@@ -59,7 +59,7 @@ return {
 		{ key = "k", mods = "CTRL|SHIFT", action = wezterm.action.ActivatePaneDirection("Up") },
 		{ key = "j", mods = "CTRL|SHIFT", action = wezterm.action.ActivatePaneDirection("Down") },
 
-    -- -- Resizing panes — ALT+h/j/k/l, amount 3 cols/rows per press
+		-- -- Resizing panes — ALT+h/j/k/l, amount 3 cols/rows per press
 		{ key = "h", mods = "ALT", action = wezterm.action({ AdjustPaneSize = { "Left", 3 } }) },
 		{ key = "l", mods = "ALT", action = wezterm.action({ AdjustPaneSize = { "Right", 3 } }) },
 		{ key = "k", mods = "ALT", action = wezterm.action({ AdjustPaneSize = { "Up", 3 } }) },
@@ -67,5 +67,21 @@ return {
 
 		-- Create new window
 		{ key = "N", mods = "CTRL|SHIFT", action = wezterm.action.SpawnWindow },
+
+		-- Scroll with Ctrl+Shift+u/d (half page, vim-like)
+		-- Ctrl+Shift+K        scroll up one line
+		-- Ctrl+Shift+J        scroll down one line
+		-- Ctrl+Shift+PageUp   scroll up one page
+		-- Ctrl+Shift+PageDown scroll down one page
+		{
+			key = "u",
+			mods = "CTRL|SHIFT",
+			action = wezterm.action.ScrollByPage(-0.5),
+		},
+		{
+			key = "d",
+			mods = "CTRL|SHIFT",
+			action = wezterm.action.ScrollByPage(0.5),
+		},
 	},
 }

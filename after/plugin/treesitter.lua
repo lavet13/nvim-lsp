@@ -13,6 +13,13 @@ require("nvim-treesitter.configs").setup({
 		"yaml",
 		"markdown", -- add this
 		"markdown_inline", -- and this — handles inline syntax inside markdown
+		"bash",
+		"csv",
+		"dockerfile",
+		"gitignore",
+		"json",
+		"python",
+		"toml",
 	},
 	sync_install = false,
 

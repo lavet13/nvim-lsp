@@ -823,3 +823,59 @@ git push origin nvim-0.11.6-r1
 ```
 
 Правило: старые теги не передвигаем. Для нового состояния создаём новый тег (`-r2`, `-r3`, и т.д.).
+
+### Panic recovery: коммит в неправильной ветке
+
+Ниже мини-шпаргалка для типичной ситуации "закоммитил не в ту ветку".
+
+#### Случай A: commit уже сделал, но **ещё не push**
+
+Допустим, ты случайно сделал commit в `main`, а хотел в `nvim-0.11`.
+
+```bash
+# 1) Убедись, что ты на ветке с ошибочным коммитом
+git checkout main
+
+# 2) Сними последний commit, но оставь изменения в рабочей директории
+git reset --soft HEAD~1
+
+# 3) Переключись на правильную ветку
+git checkout nvim-0.11
+
+# 4) Закоммить изменения уже в правильной ветке
+git add .
+git commit -m "<правильный commit message>"
+git push
+```
+
+`--soft` откатывает commit, но сохраняет изменения staged, чтобы ты не потерял работу.
+
+#### Случай B: commit уже **запушил в main**
+
+В этом случае безопаснее не переписывать историю, а "перенести" изменения в нужную ветку.
+
+```bash
+# 1) Обнови ссылки на удалённый репозиторий
+git fetch origin
+
+# 2) Переключись на ветку поддержки
+git checkout nvim-0.11
+git pull origin nvim-0.11
+
+# 3) Подтяни изменения из main в nvim-0.11
+git merge origin/main
+
+# 4) Запушь обновлённую ветку поддержки
+git push origin nvim-0.11
+```
+
+Если нужен не весь `main`, а только один commit, используй `cherry-pick`:
+
+```bash
+git checkout nvim-0.11
+git pull origin nvim-0.11
+git cherry-pick <commit_sha_from_main>
+git push origin nvim-0.11
+```
+
+Правило безопасности: если commit уже ушёл в remote, предпочитай `merge`/`cherry-pick`, а не `reset --hard` + force-push.
