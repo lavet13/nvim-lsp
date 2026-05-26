@@ -1,4 +1,8 @@
 require("nvim-treesitter.configs").setup({
+	ignore_install = {
+		"tmux",
+		"dockerfile",
+	},
 	ensure_installed = {
 		"vimdoc",
 		"javascript",
@@ -11,15 +15,24 @@ require("nvim-treesitter.configs").setup({
 		"html",
 		"vim",
 		"yaml",
+		"xml",
 		"markdown", -- add this
 		"markdown_inline", -- and this — handles inline syntax inside markdown
 		"bash",
 		"csv",
-		"dockerfile",
-		"gitignore",
 		"json",
+		"jsonc",
 		"python",
 		"toml",
+		"nginx",
+		"prisma",
+		"powershell",
+		"css",
+		"diff",
+		"git_config",
+		"gitcommit",
+		"gitignore",
+		"sql",
 	},
 	sync_install = false,
 
