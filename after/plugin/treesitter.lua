@@ -33,6 +33,7 @@ require("nvim-treesitter.configs").setup({
 		"gitcommit",
 		"gitignore",
 		"sql",
+    "requirements",
 	},
 	sync_install = false,
 
