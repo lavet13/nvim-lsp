@@ -16,7 +16,7 @@ require("conform").setup({
 		markdown = { "prettier" },
 		graphql = { "prettier" },
 		lua = { "stylua" },
-		python = { "isort", "black" },
+		python = { "ruff_format" },
 		javascript = { "prettier" },
 		javascriptreact = { "prettier" },
 		typescript = { "prettier" },
