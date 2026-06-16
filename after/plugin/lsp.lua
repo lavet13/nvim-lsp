@@ -94,7 +94,7 @@ vim.lsp.config("clangd", {
 
 require("mason").setup({})
 require("mason-lspconfig").setup({
-	ensure_installed = { "ts_ls", "lua_ls", "prismals", "cssls", "jsonls", "html" },
+	ensure_installed = { "ts_ls", "lua_ls", "prismals", "cssls", "jsonls", "html", "pyright", "ruff" },
 	automatic_enable = true,
 })
 

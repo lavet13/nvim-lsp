@@ -7,7 +7,7 @@ local naysayer_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/naysayer.lua
 
 return {
 	-- General appearance
-	font = wezterm.font("JetBrainsMonoNL Nerd Font Mono", { weight = "Regular" }),
+	font = wezterm.font("Cascadia Mono", { weight = "Regular" }),
 	font_size = 14.5,
 	window_decorations = "RESIZE",
 	-- window_background_image = "C:/Users/Ivan/Pictures/cyberpunk-2077-video-game-yorha-2b-wallpaper-2000x1333_39.jpg",
