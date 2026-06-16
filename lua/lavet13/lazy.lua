@@ -75,6 +75,10 @@ require("lazy").setup({
 						name = "donbass-tour",
 						path = "~/notes/donbass-tour",
 					},
+					{
+						name = "chzzk-dl-live",
+						path = "~/notes/chzzk-dl-live",
+					},
 				},
 			})
 		end,
