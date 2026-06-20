@@ -26,7 +26,14 @@ return {
 	default_cursor_style = "SteadyBlock",
 
 	-- Shell
-	default_prog = { "G:/Programs/Git/bin/bash.exe" },
+	default_prog = { "wsl.exe", "-d", "Debian" },
+	launch_menu = {
+		{
+			label = "WSL Debian + tmux",
+			args = { "wsl.exe", "-d", "Debian", "--cd", "~", "-e", "tmux", "new", "-A", "-s", "main" },
+		},
+		{ label = "WSL Debian (plain)", args = { "wsl.exe", "-d", "Debian", "--cd", "~" } },
+	},
 
 	scrollback_lines = 10000,
 
@@ -83,5 +90,8 @@ return {
 			mods = "CTRL|SHIFT",
 			action = wezterm.action.ScrollByPage(0.5),
 		},
+
+		-- Ctrl+Shift+L opens the launcher; arrow keys / typing to filter, Enter to pick.
+		{ key = "l", mods = "CTRL|SHIFT", action = wezterm.action.ShowLauncher },
 	},
 }
