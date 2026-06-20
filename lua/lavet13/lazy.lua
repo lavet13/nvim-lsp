@@ -79,6 +79,10 @@ require("lazy").setup({
 						name = "chzzk-dl-live",
 						path = "~/notes/chzzk-dl-live",
 					},
+					{
+						name = "dev-env",
+						path = "~/notes/dev-env",
+					},
 				},
 			})
 		end,
