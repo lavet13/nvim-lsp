@@ -28,11 +28,7 @@ return {
 	-- Shell
 	default_prog = { "G:/Programs/Git/bin/bash.exe" },
 	launch_menu = {
-		{
-			label = "WSL Debian + tmux",
-			args = { "wsl.exe", "-d", "Debian", "--cd", "~", "-e", "tmux", "new", "-A", "-s", "main" },
-		},
-		{ label = "WSL Debian (plain)", args = { "wsl.exe", "-d", "Debian", "--cd", "~" } },
+		{ label = "WSL Debian", args = { "wsl.exe", "-d", "Debian", "--cd", "~" } },
 	},
 
 	scrollback_lines = 10000,
