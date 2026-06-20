@@ -26,7 +26,7 @@ return {
 	default_cursor_style = "SteadyBlock",
 
 	-- Shell
-	default_prog = { "G:/Programs/Git/git-bash.exe" },
+	default_prog = { "G:/Programs/Git/bin/bash.exe" },
 	launch_menu = {
 		{
 			label = "WSL Debian + tmux",
