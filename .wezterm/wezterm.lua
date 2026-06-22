@@ -28,7 +28,12 @@ return {
 	-- Shell
 	default_prog = { "G:/Programs/Git/bin/bash.exe" },
 	launch_menu = {
-		{ label = "WSL Debian", args = { "wsl.exe", "-d", "Debian", "--cd", "~" } },
+    { label = "Debian (tmux)", args = { "wsl.exe", "-d", "Debian", "--cd", "~" } },
+		{
+			label = "Debian (no tmux)",
+			-- env sets NO_TMUX for the interactive login zsh it launches → guard skips
+			args = { "wsl.exe", "-d", "Debian", "--cd", "~", "--", "env", "NO_TMUX=1", "zsh", "-li" },
+		},
 	},
 
 	scrollback_lines = 10000,
