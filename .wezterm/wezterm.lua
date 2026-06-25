@@ -95,6 +95,6 @@ return {
 		},
 
 		-- Ctrl+Shift+L opens the launcher; arrow keys / typing to filter, Enter to pick.
-		{ key = "l", mods = "CTRL|SHIFT", action = wezterm.action.ShowLauncher },
+		{ key = "o", mods = "CTRL|SHIFT", action = wezterm.action.ShowLauncher },
 	},
 }
