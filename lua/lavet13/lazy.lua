@@ -88,6 +88,21 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"rareitems/anki.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" }, -- required
+		lazy = false, -- README: do NOT lazy-load; it needs to register the .anki filetype
+		opts = {
+			-- Map each Anki note-type to the deck cards should go into.
+			-- LHS = note-type name in Anki, RHS = deck name (":" nests subdecks).
+			models = {
+				["Basic"] = "Dev", -- start simple: Basic note-type → your "Dev" deck
+			},
+			-- move cursor to the first field after :Anki creates the form
+			move_cursor_after_creation = true,
+			tex_support = false,
+		},
+	},
+	{
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
