@@ -28,6 +28,16 @@ autocmd({ "BufWritePre" }, {
   command = [[%s/\s\+$//e]],
 })
 
+-- Force UTF-8 on .anki buffers so pasted em dashes / curly quotes (Windows-1252
+-- bytes like 0x97) get converted, not passed raw to AnkiConnect (which rejects
+-- non-UTF-8 with a "codec can't decode byte" error).
+autocmd({ "BufNewFile", "BufReadPre", "FileType" }, {
+  pattern = { "*.anki", "anki" }, -- extension AND the filetype anki.nvim sets
+  callback = function()
+    vim.bo.fileencoding = "utf-8"
+  end,
+})
+
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
