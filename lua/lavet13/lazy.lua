@@ -76,8 +76,8 @@ require("lazy").setup({
 						path = "~/notes/donbass-tour",
 					},
 					{
-						name = "chzzk-dl-live",
-						path = "~/notes/chzzk-dl-live",
+						name = "twitch-dl-live",
+						path = "~/notes/twitch-dl-live",
 					},
 					{
 						name = "dev-env",
