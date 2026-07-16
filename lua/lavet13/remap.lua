@@ -39,7 +39,17 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
-vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/appdata/local/nvim/lua/lavet13/lazy.lua<CR>")
+-- <leader>vpp: open the plugin list. Don't hardcode the path — I edit this config
+-- from both Windows (Git Bash) and WSL Debian, and the config dir differs.
+vim.keymap.set("n", "<leader>vpp", function()
+	-- stdpath("config") IS the resolved config dir:
+	--   Windows   → ~/AppData/Local/nvim
+	--   Linux/WSL → ~/.config/nvim  (or $XDG_CONFIG_HOME/nvim)
+	-- vim.fs.joinpath builds the path with the right separator (0.10+; you're on 0.11).
+	local lazy_file = vim.fs.joinpath(vim.fn.stdpath("config"), "lua", "lavet13", "lazy.lua")
+	-- fnameescape guards against spaces/specials in the path before :edit sees it.
+	vim.cmd.edit(vim.fn.fnameescape(lazy_file))
+end, { desc = "Edit plugin list (lazy.lua)" })
 vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>")
 
 vim.keymap.set("n", "<leader><leader>", function()
