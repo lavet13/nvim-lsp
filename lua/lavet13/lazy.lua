@@ -136,5 +136,4 @@ require("lazy").setup({
 			require("Comment").setup()
 		end,
 	},
-	"erikbackman/brightburn.vim",
 })
