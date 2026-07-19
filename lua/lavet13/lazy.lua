@@ -47,12 +47,6 @@ require("lazy").setup({
 	},
 	"lewis6991/gitsigns.nvim",
 	{
-		"andymass/vim-matchup",
-		init = function()
-			vim.g.matchup_matchparen_offscreen = { method = "popup" }
-		end,
-	},
-	{
 		"epwalsh/obsidian.nvim",
 		version = "*",
 		lazy = false,
