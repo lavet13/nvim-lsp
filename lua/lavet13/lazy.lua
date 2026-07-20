@@ -47,13 +47,6 @@ require("lazy").setup({
 	},
 	"lewis6991/gitsigns.nvim",
 	{
-		"andymass/vim-matchup",
-		init = function()
-      vim.g.matchup_matchparen_offscreen = {} -- was { method = "popup" } — the lag source
-      vim.g.matchup_matchparen_deferred = 1 -- highlight only when the cursor stops
-		end,
-	},
-	{
 		"epwalsh/obsidian.nvim",
 		version = "*",
 		lazy = false,
