@@ -38,6 +38,3 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 
 vim.o.winborder = "rounded"
-
-vim.keymap.set({ "n", "x", "o" }, "%", "<Plug>(MatchitNormalForward)", { silent = true })
-vim.keymap.set({ "n", "x", "o" }, "g%", "<Plug>(MatchitNormalBackward)", { silent = true })
