@@ -1,9 +1,38 @@
 local wezterm = require("wezterm")
 
 -- Load the themes
-local rose_pine_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/rose-pine.lua")
-local rose_pine_theme_main, rose_pine_theme_moon = rose_pine_theme.main, rose_pine_theme.moon
+-- local rose_pine_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/rose-pine.lua")
+-- local rose_pine_theme_main, rose_pine_theme_moon = rose_pine_theme.main, rose_pine_theme.moon
 local naysayer_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/naysayer.lua")
+
+-- target_triple is a string WezTerm sets at runtime describing the platform,
+-- e.g. "x86_64-pc-windows-msvc" or "x86_64-unknown-linux-gnu".
+-- string.find returns the match position or nil, so `~= nil` gives us a boolean.
+local is_windows = wezterm.target_triple:find("windows") ~= nil
+
+-- Declare the two OS-dependent values as locals FIRST...
+local default_prog
+local launch_menu
+
+-- ...then fill them in with a normal if statement, which is legal out here.
+if is_windows then
+  default_prog = { "G:/Programs/Git/bin/bash.exe" }
+  launch_menu = {
+    { label = "Debian (tmux)", args = { "wsl.exe", "-d", "Debian", "--cd", "~" } },
+    {
+      label = "Debian (no tmux)",
+      -- env sets NO_TMUX for the interactive login zsh it launches → guard skips
+      args = { "wsl.exe", "-d", "Debian", "--cd", "~", "--", "env", "NO_TMUX=1", "zsh", "-li" },
+    },
+  }
+else
+  -- Native Linux: no wsl.exe, no G:/ drive — just zsh.
+  default_prog = { "/usr/bin/zsh", "-l" }
+  launch_menu = {
+    { label = "zsh (tmux)", args = { "/usr/bin/zsh", "-l" } },
+    { label = "zsh (no tmux)", args = { "env", "NO_TMUX=1", "zsh", "-li" } },
+  }
+end
 
 return {
 	-- General appearance
@@ -25,18 +54,11 @@ return {
 
 	default_cursor_style = "SteadyBlock",
 
-	-- Shell
-	default_prog = { "G:/Programs/Git/bin/bash.exe" },
-  -- default_prog = { "wsl.exe", "-d", "Debian", "--", "env", "NO_TMUX=1", "zsh", "-li" },
 
-	launch_menu = {
-		{ label = "Debian (tmux)", args = { "wsl.exe", "-d", "Debian", "--cd", "~" } },
-		{
-			label = "Debian (no tmux)",
-			-- env sets NO_TMUX for the interactive login zsh it launches → guard skips
-			args = { "wsl.exe", "-d", "Debian", "--cd", "~", "--", "env", "NO_TMUX=1", "zsh", "-li" },
-		},
-	},
+	-- Shell
+  default_prog = default_prog,
+
+  launch_menu = launch_menu,
 
 	scrollback_lines = 10000,
 
