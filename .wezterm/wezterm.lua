@@ -14,24 +14,17 @@ local is_windows = wezterm.target_triple:find("windows") ~= nil
 local default_prog
 local launch_menu
 
--- ...then fill them in with a normal if statement, which is legal out here.
 if is_windows then
-  default_prog = { "G:/Programs/Git/bin/bash.exe" }
-  launch_menu = {
-    { label = "Debian (tmux)", args = { "wsl.exe", "-d", "Debian", "--cd", "~" } },
-    {
-      label = "Debian (no tmux)",
-      -- env sets NO_TMUX for the interactive login zsh it launches → guard skips
-      args = { "wsl.exe", "-d", "Debian", "--cd", "~", "--", "env", "NO_TMUX=1", "zsh", "-li" },
-    },
-  }
+	default_prog = { "G:/Programs/Git/bin/bash.exe" }
+	launch_menu = {
+		{ label = "Debian", args = { "wsl.exe", "-d", "Debian", "--cd", "~" } },
+	}
 else
-  -- Native Linux: no wsl.exe, no G:/ drive — just zsh.
-  default_prog = { "/usr/bin/zsh", "-l" }
-  launch_menu = {
-    { label = "zsh (tmux)", args = { "/usr/bin/zsh", "-l" } },
-    { label = "zsh (no tmux)", args = { "env", "NO_TMUX=1", "zsh", "-li" } },
-  }
+	default_prog = { "/usr/bin/zsh", "-l" }
+	launch_menu = {
+		{ label = "zsh", args = { "/usr/bin/zsh", "-l" } },
+		{ label = "tmux", args = { "/usr/bin/zsh", "-lic", "tmux new-session -A -s main; exec zsh" } },
+	}
 end
 
 return {
@@ -54,11 +47,10 @@ return {
 
 	default_cursor_style = "SteadyBlock",
 
-
 	-- Shell
-  default_prog = default_prog,
+	default_prog = default_prog,
 
-  launch_menu = launch_menu,
+	launch_menu = launch_menu,
 
 	scrollback_lines = 10000,
 
