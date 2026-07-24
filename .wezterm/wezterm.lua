@@ -18,6 +18,21 @@ if is_windows then
 	default_prog = { "G:/Programs/Git/bin/bash.exe" }
 	launch_menu = {
 		{ label = "Debian", args = { "wsl.exe", "-d", "Debian", "--cd", "~" } },
+		-- tmux inside WSL, on demand — mirror of the Linux "tmux" entry
+		{
+			label = "tmux",
+			args = {
+				"wsl.exe",
+				"-d",
+				"Debian",
+				"--cd",
+				"~",
+				"--",
+				"zsh",
+				"-lic",
+				"tmux new-session -A -s main; exec zsh",
+			},
+		},
 	}
 else
 	default_prog = { "/usr/bin/zsh", "-l" }
