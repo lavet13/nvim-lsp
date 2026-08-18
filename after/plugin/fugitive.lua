@@ -22,6 +22,21 @@ autocmd("BufWinEnter", {
 			vim.cmd.Git("pull")
 		end, opts)
 
+		-- force-push safely (only overwrites if remote hasn't moved since last fetch)
+		vim.keymap.set("n", "<leader>fp", function()
+			vim.cmd.Git("push --force-with-lease")
+		end, opts)
+
+		-- fetch upstream without merging — refreshes what --force-with-lease checks against
+		vim.keymap.set("n", "<leader>gf", function()
+			vim.cmd.Git("fetch upstream")
+		end, opts)
+
+		-- sync your fork's main with upstream (run from main, not this branch)
+		vim.keymap.set("n", "<leader>gu", function()
+			vim.cmd.Git("pull --rebase upstream main")
+		end, opts)
+
 		-- NOTE: It allows me to easily set the branch i am pushing and any tracking
 		-- needed if i did not set the branch up correctly
 		vim.keymap.set("n", "<leader>t", ":Git push -u origin ", opts)
