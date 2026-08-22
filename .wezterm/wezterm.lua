@@ -44,9 +44,12 @@ end
 
 return {
 	-- General appearance
-	font = wezterm.font("CaskaydiaMono Nerd Font", { weight = "Regular" }),
-  -- disable ligatures
-  harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
+	font = wezterm.font("CaskaydiaMono Nerd Font"),
+	-- disable ligatures
+	harfbuzz_features = { "calt=0", "clig=0", "liga=0" },
+	freetype_load_target = "Light",
+	freetype_render_target = "HorizontalLcd",
+
 	font_size = 14.5,
 	window_decorations = "NONE",
 	-- window_background_image = "C:/Users/Ivan/Pictures/cyberpunk-2077-video-game-yorha-2b-wallpaper-2000x1333_39.jpg",
@@ -69,7 +72,7 @@ return {
 
 	launch_menu = launch_menu,
 
-  -- window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
+	-- window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
 
 	scrollback_lines = 10000,
 
