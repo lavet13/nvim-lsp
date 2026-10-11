@@ -72,7 +72,7 @@ return {
 	-- syntax
 	comments = raw.comments,
 	punctuation = raw.punctuation, -- also Type, like the .el
-	delimiters = raw.keywords, -- () {} [] , ; and operators: raw.keywords (white) or raw.text (tan)
+	delimiters = raw.text, -- () {} [] , ; and operators: raw.keywords (white) or raw.text (tan)
 	keywords = raw.keywords,
 	builtin = raw.keywords,
 	variables = raw.text,
