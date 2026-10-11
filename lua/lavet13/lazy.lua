@@ -107,7 +107,6 @@ require("lazy").setup({
 			})
 		end,
 	},
-	"RostislavArts/naysayer.nvim",
 	"theprimeagen/harpoon",
 	"mbbill/undotree",
 	"tpope/vim-fugitive",

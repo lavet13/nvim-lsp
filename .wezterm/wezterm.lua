@@ -1,14 +1,18 @@
 local wezterm = require("wezterm")
 
--- Load the themes
--- local rose_pine_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/rose-pine.lua")
--- local rose_pine_theme_main, rose_pine_theme_moon = rose_pine_theme.main, rose_pine_theme.moon
-local naysayer_theme = dofile(wezterm.home_dir .. "/.wezterm/themes/naysayer.lua")
-
 -- target_triple is a string WezTerm sets at runtime describing the platform,
 -- e.g. "x86_64-pc-windows-msvc" or "x86_64-unknown-linux-gnu".
 -- string.find returns the match position or nil, so `~= nil` gives us a boolean.
 local is_windows = wezterm.target_triple:find("windows") ~= nil
+
+-- Config root per OS: `cond and a or b` is Lua's ternary
+-- (safe here because neither string can be nil/false)
+local nvim_dir = wezterm.home_dir
+  .. (is_windows and "/AppData/Local/nvim" or "/.config/nvim")
+-- dofile = run a file by path and return its result
+-- (WezTerm has no Neovim module path, so `require` can't find these files)
+local palette = dofile(nvim_dir .. "/lua/lavet13/palette.lua")
+local naysayer_theme = dofile(nvim_dir .. "/.wezterm/themes/naysayer.lua")
 
 -- Declare the two OS-dependent values as locals FIRST...
 local default_prog
@@ -62,8 +66,8 @@ return {
 	initial_rows = 30,
 	initial_cols = 120,
 	enable_tab_bar = true,
-	colors = naysayer_theme.colors(),
-	window_frame = naysayer_theme.window_frame(),
+	colors = naysayer_theme.colors(palette),
+	window_frame = naysayer_theme.window_frame(palette),
 
 	default_cursor_style = "SteadyBlock",
 
