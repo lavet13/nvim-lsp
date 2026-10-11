@@ -35,7 +35,15 @@ hl("Folded", { fg = p.line_fg, bg = p.highlight_line })
 hl("WinSeparator", { fg = p.line_fg }) -- 0.10+ draws separators with THIS
 hl("VertSplit", { link = "WinSeparator" }) -- legacy name
 hl("Visual", { bg = p.selection })
-hl("MatchParen", { bg = p.selection })
+hl("MatchParen", { fg = p.match_fg, bg = p.match_bg })
+-- LSP document highlight (other uses of the word under the cursor): default
+-- links to Visual, which made "pointing at" look like "selected".
+hl("LspReferenceText", { fg = p.match_fg, bg = p.match_bg })
+hl("LspReferenceRead", { fg = p.match_fg, bg = p.match_bg })
+hl("LspReferenceWrite", { fg = p.match_fg, bg = p.match_bg })
+hl("LspReferenceTarget", { link = "LspReferenceText" })
+hl("LspSignatureActiveParameter", { fg = p.keywords, bold = true, underline = true })
+hl("SnippetTabstop", { fg = p.match_fg, bg = p.match_bg })
 hl("NonText", { fg = p.line_fg }) -- ~ after EOF, showbreak
 hl("Whitespace", { fg = p.line_fg }) -- 'list' chars
 hl("SpecialKey", { fg = p.line_fg })
@@ -56,15 +64,15 @@ hl("TabLineSel", { fg = p.mode_line_fg, bg = p.mode_line_bg })
 
 -- popup menu (completion)
 hl("Pmenu", { fg = p.fg, bg = p.highlight_line })
-hl("PmenuSel", { fg = p.keywords, bg = p.line_fg })
+hl("PmenuSel", { fg = p.keywords, bg = p.selection }) -- the picked item IS a selection
 hl("PmenuSbar", { bg = p.highlight_line })
-hl("PmenuThumb", { bg = p.line_fg })
-hl("PmenuMatch", { fg = p.strings, bold = true })
+hl("PmenuThumb", { bg = p.fg }) -- tan, like the statusline
+hl("PmenuMatch", { link = "CurSearch" })
 hl("PmenuMatchSel", { fg = p.keywords, bold = true })
 
 -- search
 hl("Search", { fg = p.search_fg, bg = p.search_bg })
-hl("CurSearch", { fg = p.search_fg, bg = p.cur_search_bg, bold = true })
+hl("CurSearch", { fg = p.cur_search_fg, bg = p.cur_search_bg })
 hl("IncSearch", { link = "CurSearch" })
 hl("Substitute", { link = "CurSearch" })
 
@@ -94,14 +102,21 @@ hl("Identifier", { fg = p.variables })
 hl("Function", { fg = p.functions })
 hl("Statement", { fg = p.keywords })
 hl("Keyword", { fg = p.keywords })
-hl("Operator", { fg = p.punctuation })
+hl("Operator", { fg = p.delimiters })
 hl("Type", { fg = p.punctuation })
 hl("PreProc", { fg = p.macros })
 hl("Special", { fg = p.special })
-hl("Delimiter", { fg = p.punctuation })
+hl("Delimiter", { fg = p.delimiters })
 hl("Underlined", { underline = true })
 hl("Error", { fg = p.error })
-hl("Todo", { fg = p.search_fg, bg = p.search_bg, bold = true })
+hl("Todo", { fg = p.bg, bg = p.todo_bg, bold = true })
+
+-- == Legacy regex syntax (filetypes with no treesitter parser) ===============
+-- Vim's html.vim does `hi def link javaScript Special`: inside <script> in
+-- .php/.html files every plain identifier is the javaScript REGION itself,
+-- so it inherits Special. Point the region at ordinary text instead.
+hl("javaScript", { link = "Identifier" })
+hl("javaScriptExpression", { link = "Identifier" })
 
 -- == Diagnostics =============================================================
 hl("DiagnosticError", { fg = p.error })
@@ -136,6 +151,15 @@ hl("@variable", { link = "Identifier" })
 hl("@variable.builtin", { link = "Keyword" })
 hl("@property", { link = "Identifier" })
 hl("@function.builtin", { link = "Function" })
+-- *.builtin captures default-link to Special (orange). Send each back to its
+-- own family so `nil` looks like `true` and `package` like any other module.
+hl("@constant.builtin", { link = "Constant" }) -- nil, _VERSION
+hl("@module.builtin", { link = "@module" }) -- package, string, table, os
+hl("@type.builtin", { link = "Type" }) -- int, char (C/TS)
+hl("@tag.builtin", { link = "@tag" })
+hl("@attribute.builtin", { link = "@attribute" })
+hl("@variable.parameter.builtin", { link = "Identifier" }) -- Lua `...`
+hl("@punctuation.special", { link = "Delimiter" }) -- ${ } in template strings
 hl("@constructor", { link = "Function" }) -- default links to Special
 hl("@module", { link = "Identifier" })
 hl("@punctuation", { link = "Delimiter" })
@@ -152,10 +176,16 @@ hl("@lsp.type.parameter", {})
 hl("@lsp.type.property", {})
 
 -- == Plugins =================================================================
+-- nvim-cmp: rows use Pmenu/PmenuSel via winhighlight, but matched characters
+-- use cmp's OWN groups (CmpItemAbbrMatch -> inherits Pmenu, i.e. invisible).
+hl("CmpItemAbbrMatch", { link = "CurSearch" })
+hl("CmpItemAbbrMatchFuzzy", { link = "CurSearch" })
+
 -- telescope: borders + selection on the same tokens as floats/menus
 hl("TelescopeBorder", { link = "FloatBorder" })
 hl("TelescopeSelection", { link = "PmenuSel" })
-hl("TelescopeMatching", { link = "PmenuMatch" })
+hl("TelescopeMatching", { link = "CurSearch" }) -- fuzzy-matched chars: isearch pink
+hl("TelescopePreviewMatch", { link = "Search" }) -- grep hits in preview: lazy-highlight
 hl("TelescopePromptPrefix", { fg = p.punctuation })
 
 -- treesitter-context: sticky header reads as a slightly raised strip
