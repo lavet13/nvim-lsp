@@ -38,7 +38,7 @@ function naysayer.colors(p)
 		quick_select_label_fg = { Color = p.cur_search_fg },
 
 		-- cursor while a leader key / dead key waits for the next key
-		compose_cursor = p.cur_search_bg,
+		compose_cursor = p.pending, -- violet: clearly not the normal green cursor (2.0:1)
 		tab_bar = {
 			background = p.bg,
 			active_tab = active_tab,

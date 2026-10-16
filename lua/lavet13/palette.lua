@@ -25,7 +25,6 @@ local raw = {
 
 	-- Monokai accents (naysayer-theme-<name> in the .el)
 	yellow = "#E6DB74",
-	orange = "#FD971F",
 	red = "#F92672",
 	magenta = "#FD5FF0",
 	blue = "#66D9EF",
@@ -61,6 +60,7 @@ return {
 	selection = raw.selection, -- Visual ONLY (what you are selecting)
 	hover_bg = raw.reference, -- MatchParen, LSP references; words keep their own colour
 	cursor = raw.cursor,
+	pending = raw.violet, -- WezTerm compose cursor (leader/dead key waiting)
 
 	-- syntax
 	comments = raw.comments,
@@ -114,8 +114,10 @@ return {
 		raw.text,
 	},
 	brights = {
-		raw.highlight_line,
-		raw.orange,
+		-- bright black = line_fg: zsh-autosuggestions (fg=8) was 1.17:1 on highlight_line
+		-- bright red   = red: last orange removed (now same as normal red)
+		raw.line_fg,
+		raw.red,
 		raw.green,
 		raw.constants,
 		raw.cyan,
