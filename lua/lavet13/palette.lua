@@ -22,8 +22,6 @@ local raw = {
 	keywords = "#ffffff",
 	strings = "#3ad0b5",
 	constants = "#87ffde",
-	error = "#ff0000",
-	warning = "#ffaa00",
 
 	-- Monokai accents (naysayer-theme-<name> in the .el)
 	yellow = "#E6DB74",
@@ -45,12 +43,8 @@ local raw = {
 	diff_delete = "#322633",
 	diff_change = "#133f41",
 	diff_text = "#235c62",
-
-	-- Emacs built-in faces (naysayer-theme.el doesn't override them, so these
-	-- are what an Emacs with naysayer actually shows). X11 names from rgb.txt.
-	isearch = "#EE799F", -- PaleVioletRed2: current match (the pink)
-	isearch_fg = "#8B2323", -- brown4: text on the current match
-	lazy_highlight = "#668B8B", -- PaleTurquoise4: every other match
+	reference = "#294444", -- white 14% into background: hover (word under cursor)
+	search_dim = "#335b28", -- Monokai green 28% into background: other search matches
 }
 
 -- == 2. Roles ================================================================
@@ -65,41 +59,39 @@ return {
 	highlight_line = raw.highlight_line, -- CursorLine, ColorColumn, float/menu bg
 	line_fg = raw.line_fg, -- line numbers, borders, separators
 	selection = raw.selection, -- Visual ONLY (what you are selecting)
-	match_bg = raw.isearch_fg, -- hover = search colours INVERTED: dark brown box...
-	match_fg = raw.isearch, -- ...with pink text (search is pink box, brown text)
+	hover_bg = raw.reference, -- MatchParen, LSP references; words keep their own colour
 	cursor = raw.cursor,
 
 	-- syntax
 	comments = raw.comments,
 	punctuation = raw.punctuation, -- also Type, like the .el
-	delimiters = raw.text, -- () {} [] , ; and operators: raw.keywords (white) or raw.text (tan)
+	delimiters = raw.text, -- () {} [] , ; and operators: raw.text (tan) or raw.keywords (white)
 	keywords = raw.keywords,
-	builtin = raw.keywords,
 	variables = raw.text,
 	functions = raw.text,
 	strings = raw.strings,
 	constants = raw.constants,
 	numbers = raw.constants,
 	macros = raw.punctuation,
-	special = raw.keywords, -- escapes (\n), SpecialChar; Emacs builtin = white
+	special = raw.keywords, -- escapes (\n), SpecialChar
 
 	-- feedback
-	error = raw.error,
-	warning = raw.warning,
+	error = raw.red, -- Monokai red everywhere (was pure #ff0000)
+	warning = raw.yellow, -- Monokai yellow (was orange #ffaa00)
 	info = raw.blue,
 	hint = raw.cyan,
 	ok = raw.green,
 
 	-- search
-	search_fg = raw.keywords, -- white: tan on lazy_highlight is too faint (1.9:1)
-	search_bg = raw.lazy_highlight,
-	cur_search_fg = raw.isearch_fg,
-	cur_search_bg = raw.isearch,
+	search_fg = raw.keywords, -- other matches: white on dim green (7.9:1)
+	search_bg = raw.search_dim,
+	cur_search_fg = raw.background, -- current match: dark text on Monokai green (10.3:1)
+	cur_search_bg = raw.green,
 	todo_bg = raw.yellow,
 
 	-- git / diff
 	added = raw.green,
-	changed = raw.yellow,
+	changed = raw.violet, -- naysayer-theme-violet: used nowhere else, so never mistaken for a diagnostic
 	removed = raw.red,
 	diff_add = raw.diff_add,
 	diff_delete = raw.diff_delete,

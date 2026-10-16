@@ -19,13 +19,40 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		-- Symbol highlighting
 		if client and client:supports_method("textDocument/documentHighlight") then
+			--- Highlight other uses of the word under the cursor.
+			--- The request is async: with a 50ms updatetime, a reply for a word the
+			--- cursor already LEFT can land after CursorMoved cleared, leaving two
+			--- words lit. So the reply is dropped unless the cursor is still where
+			--- the request was made, and old highlights are cleared before painting.
+			local function highlight_word()
+				local win = vim.api.nvim_get_current_win()
+				local pos = vim.api.nvim_win_get_cursor(win) -- {row, col} at request time
+				local params = vim.lsp.util.make_position_params(win, client.offset_encoding)
+				client:request("textDocument/documentHighlight", params, function(err, result)
+					if err or not result then
+						return
+					end
+					-- stale: cursor moved (or window changed) while the server answered
+					if
+						not vim.api.nvim_win_is_valid(win)
+						or not vim.deep_equal(vim.api.nvim_win_get_cursor(win), pos)
+					then
+						return
+					end
+					vim.lsp.util.buf_clear_references(bufnr)
+					vim.lsp.util.buf_highlight_references(bufnr, result, client.offset_encoding)
+				end, bufnr)
+			end
+
 			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 				buffer = bufnr,
-				callback = vim.lsp.buf.document_highlight,
+				callback = highlight_word,
 			})
 			vim.api.nvim_create_autocmd("CursorMoved", {
 				buffer = bufnr,
-				callback = vim.lsp.buf.clear_references,
+				callback = function()
+					vim.lsp.util.buf_clear_references(bufnr)
+				end,
 			})
 		end
 
@@ -34,11 +61,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.diagnostic.open_float({ focus = true })
 		end, opts)
 		vim.keymap.set("n", "]d", function()
-			vim.diagnostic.jump({ count = 1  })
+			vim.diagnostic.jump({ count = 1 })
 		end)
 
 		vim.keymap.set("n", "[d", function()
-			vim.diagnostic.jump({ count = -1  })
+			vim.diagnostic.jump({ count = -1 })
 		end)
 		vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
 		vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)

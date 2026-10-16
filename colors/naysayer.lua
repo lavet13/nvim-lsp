@@ -35,15 +35,16 @@ hl("Folded", { fg = p.line_fg, bg = p.highlight_line })
 hl("WinSeparator", { fg = p.line_fg }) -- 0.10+ draws separators with THIS
 hl("VertSplit", { link = "WinSeparator" }) -- legacy name
 hl("Visual", { bg = p.selection })
-hl("MatchParen", { fg = p.match_fg, bg = p.match_bg })
--- LSP document highlight (other uses of the word under the cursor): default
--- links to Visual, which made "pointing at" look like "selected".
-hl("LspReferenceText", { fg = p.match_fg, bg = p.match_bg })
-hl("LspReferenceRead", { fg = p.match_fg, bg = p.match_bg })
-hl("LspReferenceWrite", { fg = p.match_fg, bg = p.match_bg })
+-- Hover (matching bracket, other uses of the word under the cursor): a faint
+-- neutral lift, NOT the selection blue, so "pointing at" never reads as
+-- "selected". Words keep their own colour on it.
+hl("MatchParen", { bg = p.hover_bg })
+hl("LspReferenceText", { bg = p.hover_bg })
+hl("LspReferenceRead", { bg = p.hover_bg })
+hl("LspReferenceWrite", { bg = p.hover_bg })
 hl("LspReferenceTarget", { link = "LspReferenceText" })
 hl("LspSignatureActiveParameter", { fg = p.keywords, bold = true, underline = true })
-hl("SnippetTabstop", { fg = p.match_fg, bg = p.match_bg })
+hl("SnippetTabstop", { bg = p.hover_bg })
 hl("NonText", { fg = p.line_fg }) -- ~ after EOF, showbreak
 hl("Whitespace", { fg = p.line_fg }) -- 'list' chars
 hl("SpecialKey", { fg = p.line_fg })
@@ -78,6 +79,7 @@ hl("Substitute", { link = "CurSearch" })
 
 -- messages
 hl("ErrorMsg", { fg = p.error })
+hl("NvimInternalError", { fg = p.bg, bg = p.error }) -- Neovim's own internal errors
 hl("WarningMsg", { fg = p.warning })
 hl("MoreMsg", { fg = p.ok })
 hl("Question", { fg = p.ok })
@@ -184,8 +186,8 @@ hl("CmpItemAbbrMatchFuzzy", { link = "CurSearch" })
 -- telescope: borders + selection on the same tokens as floats/menus
 hl("TelescopeBorder", { link = "FloatBorder" })
 hl("TelescopeSelection", { link = "PmenuSel" })
-hl("TelescopeMatching", { link = "CurSearch" }) -- fuzzy-matched chars: isearch pink
-hl("TelescopePreviewMatch", { link = "Search" }) -- grep hits in preview: lazy-highlight
+hl("TelescopeMatching", { link = "CurSearch" }) -- fuzzy-matched chars: current-match green
+hl("TelescopePreviewMatch", { link = "Search" }) -- grep hits in preview: dim green
 hl("TelescopePromptPrefix", { fg = p.punctuation })
 
 -- treesitter-context: sticky header reads as a slightly raised strip

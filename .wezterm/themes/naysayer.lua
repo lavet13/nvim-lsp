@@ -18,21 +18,22 @@ function naysayer.colors(p)
 		selection_bg = p.selection,
 		ansi = p.ansi,
 		brights = p.brights,
+
 		-- chrome: same roles as Neovim's separators and completion scrollbar
 		split = p.line_fg, -- lines between panes (Neovim: WinSeparator)
 		scrollbar_thumb = p.fg, -- tan (Neovim: PmenuThumb)
 
-		-- search mode (Ctrl+Shift+F) and copy mode: Emacs isearch, like Neovim's
+		-- search mode (Ctrl+Shift+F) and copy mode: Monokai green, like Neovim's
 		-- CurSearch (current hit) and Search (every other hit)
 		copy_mode_active_highlight_bg = { Color = p.cur_search_bg },
 		copy_mode_active_highlight_fg = { Color = p.cur_search_fg },
-		copy_mode_inactive_highlight_bg = { Color = p.match_bg },
-		copy_mode_inactive_highlight_fg = { Color = p.match_fg },
+		copy_mode_inactive_highlight_bg = { Color = p.search_bg },
+		copy_mode_inactive_highlight_fg = { Color = p.search_fg },
 
 		-- quick select (Ctrl+Shift+Space): matches like search hits, the label you
 		-- type like the current hit, so the eye goes to the label
-		quick_select_match_bg = { Color = p.match_bg },
-		quick_select_match_fg = { Color = p.match_fg },
+		quick_select_match_bg = { Color = p.search_bg },
+		quick_select_match_fg = { Color = p.search_fg },
 		quick_select_label_bg = { Color = p.cur_search_bg },
 		quick_select_label_fg = { Color = p.cur_search_fg },
 
