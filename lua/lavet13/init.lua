@@ -1,3 +1,5 @@
+vim.g.mapleader = " "
+
 require("lavet13.remap")
 require("lavet13.set")
 
